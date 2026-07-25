@@ -42,6 +42,20 @@ Toute l'organisation du projet (rôles, calendrier, méthodologie, normes) est d
 dans `docs/PGOP/`. En cas de doute sur "qui fait quoi" ou "dans quel ordre", c'est la
 première chose à consulter.
 
+### Accès rapide
+
+| Document | Version à lire vite (PDF, s'ouvre dans le navigateur) | Version à modifier (Word) |
+|---|---|---|
+| Plan de Gestion et d'Organisation du Projet (PGOP) | [PGOP.pdf](docs/PGOP/PGOP_Projet_Climat_INF4163_v3.pdf) | [PGOP.docx](docs/PGOP/PGOP_Projet_Climat_INF4163_v3.docx) |
+| Squelette du rapport final | [Rapport_Squelette.pdf](rapport/Rapport_Squelette_v0.1.pdf) | [Rapport_Squelette.docx](rapport/Rapport_Squelette_v0.1.docx) |
+| Ordre du jour — réunion de lancement | [Ordre_du_jour.md](docs/Ordre_du_jour_reunion_lancement.md) | — |
+| Matrice des tâches (à remplir en réunion) | [matrice_taches.md](docs/matrice_taches.md) | — |
+
+> Astuce : GitHub affiche les PDF directement dans le navigateur (clique et lis), mais
+> pas les fichiers Word (il faut les télécharger). Pour une lecture rapide avant la
+> réunion, utilise toujours la colonne PDF ; pour éditer, ouvre le .docx dans Word et
+> repousse une nouvelle version + son PDF à jour après modification.
+
 ## État d'avancement
 
 Voir le carnet de bord (section 15 du PGOP) pour l'état de chaque phase.
