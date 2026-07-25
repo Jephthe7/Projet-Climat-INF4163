@@ -1,0 +1,34 @@
+# Système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+
+# Environnements / dépendances (si le frontend utilise Node.js)
+node_modules/
+.env
+.env.local
+
+# Environnements / dépendances (si des scripts Python sont utilisés, ex. nettoyage de données)
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Builds
+dist/
+build/
+
+# Fichiers temporaires Power BI / Office
+~$*.pbix
+~$*.docx
+~$*.pptx
+~$*.xlsx
+
+# Secrets — NE JAMAIS committer une chaîne de connexion Azure ou un mot de passe
+*.secrets
+appsettings.local.json
+connectionstrings.txt
