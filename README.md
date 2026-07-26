@@ -31,6 +31,8 @@ rapport/              Versions du rapport, figures, captures
 presentation/         PowerPoint, script de démo
 docs/
   PGOP/                Plan de Gestion et d'Organisation du Projet (document de pilotage)
+  BluePrint/           Vision globale du système
+  DAT/                 Dossier d'Architecture Technique (décisions techniques détaillées)
   Consignes/           Énoncé officiel du professeur
 assets/
   logo/                Logo et identité visuelle de l'équipe
@@ -47,9 +49,10 @@ première chose à consulter.
 | Document | Version à lire vite (PDF, s'ouvre dans le navigateur) | Version à modifier (Word) |
 |---|---|---|
 | Plan de Gestion et d'Organisation du Projet (PGOP) — comment l'équipe s'organise | [PGOP.pdf](docs/PGOP/PGOP_Projet_Climat_INF4163_v3.pdf) | [PGOP.docx](docs/PGOP/PGOP_Projet_Climat_INF4163_v3.docx) |
-| Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/Blueprint_Projet_v1.docx) |
-| Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT_Projet_Climat_INF4163_v1.pdf) | [DAT.docx](docs/DAT_Projet_Climat_INF4163_v1.docx) |
+| Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/BluePrint/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/BluePrint/Blueprint_Projet_v1.docx) |
+| Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v1.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v1.docx) |
 | Squelette du rapport final — comment le projet a été réalisé | [Rapport_Squelette.pdf](rapport/Rapport_Squelette_v0.1.pdf) | [Rapport_Squelette.docx](rapport/Rapport_Squelette_v0.1.docx) |
+| Énoncé officiel du professeur | [Project_UQO_INF4163.pdf](docs/Consignes/Project_UQO_INF4163.pdf) | — |
 | Ordre du jour — réunion de lancement | [Ordre_du_jour.md](docs/Ordre_du_jour_reunion_lancement.md) | — |
 | Matrice des tâches (à remplir en réunion) | [matrice_taches.md](docs/matrice_taches.md) | — |
 
