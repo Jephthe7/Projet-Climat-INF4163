@@ -48,7 +48,7 @@ première chose à consulter.
 
 | Document | Version à lire vite (PDF, s'ouvre dans le navigateur) | Version à modifier (Word) |
 |---|---|---|
-| Plan de Gestion et d'Organisation du Projet (PGOP) — comment l'équipe s'organise | [PGOP.pdf](docs/PGOP/PGOP_Projet_Climat_INF4163_v3 (3).docx) | [PGOP.docx](docs/PGOP/PGOP_Projet_Climat_INF4163_v3 (3).pdf) |
+| Plan de Gestion et d'Organisation du Projet (PGOP) — comment l'équipe s'organise | [PGOP.pdf](docs/PGOP/PGOP_Projet_Climat_INF4163_v3(3).docx) | [PGOP.docx](docs/PGOP/PGOP_Projet_Climat_INF4163_v3(3).pdf) |
 | Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/BluePrint/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/BluePrint/Blueprint_Projet_v1.docx) |
 | Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v1.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v1.docx) |
 | Squelette du rapport final — comment le projet a été réalisé | [Rapport_Squelette.pdf](rapport/Rapport_Squelette_v0.1.pdf) | [Rapport_Squelette.docx](rapport/Rapport_Squelette_v0.1.docx) |
