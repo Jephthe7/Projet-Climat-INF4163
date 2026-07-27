@@ -16,7 +16,7 @@ de la personne une fois les rôles attribués (section 6.3 du PGOP).
 | Déploiement gratuit du site |Aka Andjui Melchisedek Ange-E |Fedjo Tejioleng Wilfried Jephthé | Site fonctionnel en local | 04/08 20h |
 | Connexion Power BI/Tableau live |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Données importées sur Azure | 04/08 20h |
 | Intégration des dashboards au site |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Connexion live + site déployé | 05/08 20h |
-| Rédaction du rapport |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Continue dès la section 4 validée | 06/08 20h |
+| Rédaction du rapport |Fedjo Tejioleng Wilfried Jephthé |Chef de groupe | Continue dès la section 4 validée | 06/08 20h |
 | Préparation de la présentation |Fedjo Tejioleng Wilfried Jephthé |Tout le groupe| Toutes les tâches ci-dessus terminées | 07/08 20h |
 
 **Rappel (PGOP 6.5)** : si une échéance ci-dessus est dépassée de plus de 24h, le
