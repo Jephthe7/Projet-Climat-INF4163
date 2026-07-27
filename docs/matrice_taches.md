@@ -13,7 +13,7 @@ de la personne une fois les rôles attribués (section 6.3 du PGOP).
 | Déclencheurs |Lohoues Martine Grâce Debora |Aka Andjui Melchisedek Ange-E | Procédures stockées testées | 02/08 20h |
 | Maquette et structure des onglets |Aka Andjui Melchisedek Ange-E |Fedjo Tejioleng Wilfried Jephthé | Schéma des bases connu | 30/07 |
 | Développement du site |Aka Andjui Melchisedek Ange-E |Fedjo Tejioleng Wilfried Jephthé | Maquette validée | 03/08 |
-| Déploiement gratuit du site |Aka Andjui Melchisedek Ange-E | | Site fonctionnel en local | 04/08 20h |
+| Déploiement gratuit du site |Aka Andjui Melchisedek Ange-E |Fedjo Tejioleng Wilfried Jephthé | Site fonctionnel en local | 04/08 20h |
 | Connexion Power BI/Tableau live |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Données importées sur Azure | 04/08 20h |
 | Intégration des dashboards au site |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Connexion live + site déployé | 05/08 20h |
 | Rédaction du rapport |Fedjo Tejioleng Wilfried Jephthé |Lohoues Martine Grâce Debora | Continue dès la section 4 validée | 06/08 20h |
