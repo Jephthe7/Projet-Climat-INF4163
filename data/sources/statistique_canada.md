@@ -1,22 +1,37 @@
 # Source — Statistique Canada
 
-## Pollution (CO2 / GES)
+## Rôle de ce document
+
+Documente la provenance des données de pollution (émissions de gaz à effet de serre) utilisées pour PollutionDB. Sert de référence directe pour la section « Environnement » du rapport final (PGOP 11.1).
+
+## Source
 
 | Champ | Valeur |
 |---|---|
-| Source | Statistique Canada — Tableau 38-10-0097-01, Compte des flux physiques des émissions de gaz à effet de serre |
+| Fournisseur | Statistique Canada |
+| Tableau | 38-10-0097-01 — Compte des flux physiques des émissions de gaz à effet de serre |
 | Lien | https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3810009701 |
 | Licence | Licence du gouvernement ouvert – Canada |
-| Date de téléchargement | *(à remplir)* |
 | Fréquence de mise à jour | Annuelle |
-| Années disponibles | 2023, 2024, 2025 *(à vérifier — la disponibilité 2024/2025 dépend de la date de publication la plus récente)* |
 | Géographie couverte | Canada, provinces et territoires |
-| Colonnes utiles | Année, Province/territoire, Émissions (Mt éq. CO2) |
-| Remarques | Un seul fichier peut couvrir toutes les provinces/années — filtrer avant export si besoin |
+| Période demandée | 2023, 2024, 2025 |
 
-## Notes générales
+## Points vérifiés avant téléchargement
 
-- Format de téléchargement : CSV (bouton "Télécharger" en haut du tableau, après avoir filtré Province/territoire = tous, années = 2023-2025)
-- Fichier brut à déposer dans `data/raw/pollution_raw.csv`
-- Vérifier l'unité exacte (Mt éq. CO2 vs Mt CO2 seul) et la noter ici une fois le fichier ouvert
-- Ne pas modifier le fichier brut — le nettoyage se fait dans `data/clean/`
+- Disponibilité effective de 2025 dans le tableau (les données les plus récentes de StatCan accusent parfois un délai de publication d'un à deux ans — à confirmer au moment du téléchargement plutôt que supposée)
+- Unité exacte utilisée (Mt éq. CO2 vs Mt CO2 seul) — à reporter ci-dessous une fois le fichier ouvert
+- Présence des 13 provinces et territoires sans exception
+
+## Fichier livré
+
+Un seul fichier CSV attendu, `data/raw/statcan_3810009701.csv`, couvrant l'ensemble des provinces/territoires et années en un seul export — contrairement à Environnement Canada, aucun découpage par station n'est nécessaire ici.
+
+## Colonnes utiles retenues
+
+- Année de référence
+- Province ou territoire
+- Émissions (Mt éq. CO2)
+
+## Statut
+
+*(à compléter une fois le fichier téléchargé : unité confirmée, années réellement disponibles, éventuelles provinces manquantes)*
