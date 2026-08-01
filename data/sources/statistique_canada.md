@@ -51,8 +51,8 @@ Cette même méthode a été appliquée aux 13 provinces/territoires × 3 année
 
 | Fichier | Contenu | Statut |
 |---|---|---|
-| `data/raw/pollution_statcan_raw.csv` | Export brut du tableau 38-10-0097-01, non modifié, tel que téléchargé depuis le site | *(à déposer — export direct depuis « Options de téléchargement » sur la page du tableau)* |
-| `data/clean/pollution_clean.csv` | Données agrégées (industries + ménages), converties en Mt CO2e, avec colonnes intermédiaires pour vérification | ✅ Généré, prêt à déposer |
+| `data/raw/pollution_statcan_raw.csv` | Export brut du tableau 38-10-0097-01, non modifié, tel que téléchargé depuis le site | ✅ Fait|
+| `data/clean/pollution_clean.csv` | Données agrégées (industries + ménages), converties en Mt CO2e, avec colonnes intermédiaires pour vérification | ✅ Fait |
 
 ## Colonnes du fichier nettoyé
 
