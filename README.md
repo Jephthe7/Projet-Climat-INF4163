@@ -2,7 +2,7 @@
 ### Sensibilisation au réchauffement climatique — Bases de données, SQL, visualisation
 
 **Équipe 5**
-- Fedjo Tejioleng Wilfried Jephthé (chef de groupe, intérim)
+- Fedjo Tejioleng Wilfried Jephthé (chef de groupe)
 - Aka Andjui Melchisedek Ange-E
 - Lohoues Martine Grâce Debora
 
@@ -24,7 +24,12 @@ sql/                  Scripts SQL, un sous-dossier par base
   temperaturedb/       CREATE TABLE, procédures, déclencheurs — TempératureDB
   pollutiondb/          idem — PollutionDB
   precipitationsdb/     idem — PrécipitationsDB
-data/                 Fichiers sources nettoyés (Excel/CSV), avec source citée
+data/
+  raw/                 Fichiers sources bruts, jamais modifiés
+  clean/               Fichiers nettoyés, prêts pour l'import SQL (+ cleaning_report.md)
+  sources/             Documentation de chaque source (lien, licence, méthode)
+  limitations.md       Limites connues des données (valeurs manquantes, écarts de période)
+scripts/              Pipeline de nettoyage reproductible (Python) — voir scripts/README.md
 frontend/             Code du site web
 powerbi/              Fichiers .pbix ou classeurs Tableau
 rapport/              Versions du rapport, figures, captures
@@ -36,6 +41,7 @@ docs/
   Consignes/           Énoncé officiel du professeur
 assets/
   logo/                Logo et identité visuelle de l'équipe
+matrice_tracabilite.md  Suivi rapide : chaque exigence de l'énoncé → où elle est satisfaite
 ```
 
 ## Document de référence
@@ -52,6 +58,7 @@ première chose à consulter.
 | Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/BluePrint/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/BluePrint/Blueprint_Projet_v1.docx) |
 | Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v1.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v1.docx) |
 | Squelette du rapport final — comment le projet a été réalisé | [Rapport_Squelette.pdf](rapport/Rapport_Squelette_v0.1.pdf) | [Rapport_Squelette.docx](rapport/Rapport_Squelette_v0.1.docx) |
+| Matrice de traçabilité — chaque exigence de l'énoncé → où elle est satisfaite | [matrice_tracabilite.md](matrice_tracabilite.md) | — |
 | Énoncé officiel du professeur | [Project_UQO_INF4163.pdf](docs/Consignes/Project_UQO_INF4163.pdf) | — |
 | Ordre du jour — réunion de lancement | [Ordre_du_jour.md](docs/Ordre_du_jour_reunion_lancement.md) | — |
 | Matrice des tâches (à remplir en réunion) | [matrice_taches.md](docs/matrice_taches.md) | — |
