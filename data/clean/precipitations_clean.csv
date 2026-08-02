@@ -1,0 +1,40 @@
+CodeProvince,NomProvince,Annee,PrecipitationTotale_mm,JoursValides,JoursTotal
+AB,Alberta,2023,348.0,365,365
+AB,Alberta,2024,547.8,366,366
+AB,Alberta,2025,471.5,362,365
+BC,Colombie-Britannique,2023,874.5,361,365
+BC,Colombie-Britannique,2024,1367.0,365,366
+BC,Colombie-Britannique,2025,957.6,362,365
+MB,Manitoba,2023,,0,365
+MB,Manitoba,2024,,0,366
+MB,Manitoba,2025,,0,365
+NB,Nouveau-Brunswick,2023,1197.6,355,365
+NB,Nouveau-Brunswick,2024,898.7,361,366
+NB,Nouveau-Brunswick,2025,885.6,360,365
+NL,Terre-Neuve-et-Labrador,2023,1353.8,365,365
+NL,Terre-Neuve-et-Labrador,2024,1704.0,366,366
+NL,Terre-Neuve-et-Labrador,2025,1295.6,365,365
+NS,Nouvelle-Écosse,2023,,0,365
+NS,Nouvelle-Écosse,2024,,0,366
+NS,Nouvelle-Écosse,2025,,0,365
+NT,Territoires du Nord-Ouest,2023,139.0,345,365
+NT,Territoires du Nord-Ouest,2024,177.8,363,366
+NT,Territoires du Nord-Ouest,2025,154.0,365,365
+NU,Nunavut,2023,,0,365
+NU,Nunavut,2024,,0,366
+NU,Nunavut,2025,,0,365
+ON,Ontario,2023,858.1,364,365
+ON,Ontario,2024,1145.2,366,366
+ON,Ontario,2025,776.8,365,365
+PE,Île-du-Prince-Édouard,2023,1214.0,363,365
+PE,Île-du-Prince-Édouard,2024,966.2,364,366
+PE,Île-du-Prince-Édouard,2025,932.8,361,365
+QC,Québec,2023,1260.9,363,365
+QC,Québec,2024,1041.5,364,366
+QC,Québec,2025,1171.4,356,365
+SK,Saskatchewan,2023,,0,365
+SK,Saskatchewan,2024,,0,366
+SK,Saskatchewan,2025,,0,365
+YT,Yukon,2023,,0,365
+YT,Yukon,2024,,0,366
+YT,Yukon,2025,,0,365
