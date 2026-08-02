@@ -1,10 +1,10 @@
 # Rapport de nettoyage
 
-Genere automatiquement le 2026-08-02 05:28 par `scripts/run_all.py`.
+Genere automatiquement le 2026-08-02 06:00 par `scripts/run_all.py`.
 
-## Température
+## Température (mensuel)
 
-- 39 lignes produites (attendu : 39, une par province × 3 années)
+- 468 lignes produites (attendu : 468 = 13 provinces × 3 années × 12 mois)
 - 0 fichier(s) ignoré(s)
 
 ## Précipitations
@@ -20,5 +20,5 @@ Genere automatiquement le 2026-08-02 05:28 par `scripts/run_all.py`.
 
 ## Résumé
 
-- Total : 117 / 117 lignes attendues sur les 3 fichiers nettoyés
+- Total : 546 / 546 lignes attendues sur les 3 fichiers nettoyés
 - **Complet**

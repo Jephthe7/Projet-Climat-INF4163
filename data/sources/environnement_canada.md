@@ -36,18 +36,18 @@ Aucune des 13 stations ne propose d'agrégat mensuel couvrant 2023-2025 (l'optio
 | NL | St. John's Intl A | 8403505 | `nl_st-johns-intl` |
 | PE | Charlottetown A | 8300301 | `pe_charlottetown` |
 | NS | Halifax Stanfield Int'l A | 8202249 | `ns_halifax-stanfield` |
-| NB | Fredericton Intl A | — | `nb_fredericton` |
+| NB | Fredericton Intl A | 8101505 | `nb_fredericton` |
 | QC | Québec Jean-Lesage Intl | 701S001 | `qc_jean-lesage` |
 | ON | Toronto Intl A | 6158731 | `on_toronto-pearson` |
-| MB | Winnipeg Intl A | — | `mb_winnipeg-intl` |
+| MB | Winnipeg Intl A | 5023227 | `mb_winnipeg-intl` |
 | SK | Regina Intl A | 4016566 | `sk_regina` |
 | AB | Calgary Intl A | 3031092 | `ab_calgary` |
 | BC | Vancouver Intl A | 1108395 | `bc_vancouver` |
-| YT | Whitehorse A | — | `yt_whitehorse` |
-| NT | Yellowknife A | — | `nt_yellowknife` |
-| NU | Iqaluit A | — | `nu_iqaluit` |
+| YT | Whitehorse A | 2101303 | `yt_whitehorse` |
+| NT | Yellowknife A | 2204101 | `nt_yellowknife` |
+| NU | Iqaluit A | 2402596 | `nu_iqaluit` |
 
-*ID climatologique laissé vide lorsqu'il n'a pas été relevé au moment du téléchargement — à compléter si besoin pour le rapport (visible sur la page de la station).*
+Les 13 ID climatologiques ont été extraits directement des fichiers CSV téléchargés (colonne « ID climatologique », première ligne de chaque fichier), pour garantir l'exactitude plutôt qu'une saisie manuelle depuis le site.
 
 ## Fichiers livrés
 
