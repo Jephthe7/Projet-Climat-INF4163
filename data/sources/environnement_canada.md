@@ -63,4 +63,5 @@ Aucune des 13 stations ne propose d'agrégat mensuel couvrant 2023-2025 (l'optio
 ## Limites connues
 
 - Une seule station par province ne représente pas la variabilité climatique interne de provinces étendues (ex. QC, ON, BC) — hypothèse assumée pour rester dans le temps disponible, à mentionner explicitement dans le rapport (section Difficultés/Choix du DAT).
-- Les valeurs manquantes éventuelles (jours sans relevé) seront traitées au nettoyage, pas ici.
+- Les valeurs manquantes ponctuelles (jours sans relevé, quelques cas par station) sont traitées au nettoyage — interpolation ou exclusion documentée selon le volume.
+- **Précipitations non disponibles pour 5 stations (MB, NS, SK, YT, NU)** : les stations retenues pour le Manitoba, la Nouvelle-Écosse, la Saskatchewan, le Yukon et le Nunavut ne publient pas les précipitations totales sur le portail des Données climatiques historiques pour les années étudiées — colonne présente mais jamais renseignée, confirmant qu'il s'agit d'une limite de la station (opérée par NAVCAN, orientée aviation) et non d'une erreur de collecte. Une recherche de station de remplacement a été envisagée puis écartée (coût disproportionné par rapport au temps restant). Aucune estimation ni interpolation n'a été faite pour ces cas — voir `data/limitations.md` pour le détail complet.
