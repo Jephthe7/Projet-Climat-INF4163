@@ -26,8 +26,8 @@ def main():
     lignes_rapport.append("# Rapport de nettoyage\n")
     lignes_rapport.append(f"Genere automatiquement le {datetime.now().strftime('%Y-%m-%d %H:%M')} par `scripts/run_all.py`.\n")
 
-    lignes_rapport.append("## Température\n")
-    lignes_rapport.append(f"- {len(temp_result)} lignes produites (attendu : 39, une par province × 3 années)")
+    lignes_rapport.append("## Température (mensuel)\n")
+    lignes_rapport.append(f"- {len(temp_result)} lignes produites (attendu : 468 = 13 provinces × 3 années × 12 mois)")
     lignes_rapport.append(f"- {len(temp_skipped)} fichier(s) ignoré(s)")
     for f, reason in temp_skipped:
         lignes_rapport.append(f"  - `{f}` : {reason}")
@@ -47,7 +47,7 @@ def main():
     lignes_rapport.append(f"- Années retenues (3 plus récentes disponibles à la source) : {pollution_annees}")
     lignes_rapport.append("")
 
-    total_attendu = 39 * 3
+    total_attendu = 468 + 39 + 39
     total_produit = len(temp_result) + len(precip_result) + len(pollution_result)
     lignes_rapport.append("## Résumé\n")
     lignes_rapport.append(f"- Total : {total_produit} / {total_attendu} lignes attendues sur les 3 fichiers nettoyés")
