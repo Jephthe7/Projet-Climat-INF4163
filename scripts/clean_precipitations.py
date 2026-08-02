@@ -9,7 +9,7 @@ Traitement :
 2. Conversion des virgules decimales en points
 3. Somme des precipitations quotidiennes -> total annuel par province
 4. Cas particulier documente (voir data/limitations.md) : les stations MB, NS,
-   SK et YT ne publient aucune donnee de precipitation (colonne presente mais
+   NU, SK et YT ne publient aucune donnee de precipitation (colonne presente mais
    toujours vide). Le total est alors laisse a NULL, jamais estime.
 
 Execution : python clean_precipitations.py
