@@ -47,4 +47,4 @@ python scripts/clean_pollution.py
 
 - Fichiers au format horaire au lieu de quotidien → détectés et ignorés proprement (signalés dans le rapport, jamais de plantage)
 - Stations sans données de précipitation (MB, NS, NU, SK, YT) → valeur laissée à `NULL`, jamais estimée — voir `data/limitations.md`
-- Décalage de période pour PollutionDB (2021-2023 au lieu de 2023-2025) → le script prend automatiquement les 3 années les plus récentes disponibles dans la source, quelle qu'elles soient — voir `data/sources/statistique_canada.md`
+- Décalage de période pour PollutionDB (2022-2024, source ECCC, au lieu de 2023-2025) → confirmé par écrit par le professeur le 02/08 — voir `data/sources/eccc_inventaire_ges.md`

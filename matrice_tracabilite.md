@@ -8,7 +8,7 @@ Relie chaque exigence de l'énoncé (`docs/Consignes/Project_UQO_INF4163.pdf`) �
 |---|---|---|
 | 3 bases Azure SQL (TempératureDB, PollutionDB, PrécipitationsDB) | `docs/DAT/` §8, `sql/temperaturedb\|pollutiondb\|precipitationsdb/` | 🟡 Conçu, SQL à écrire |
 | 9 tables (3 par base) | `docs/DAT/` §8, `docs/PGOP/` Annexe B (24/07) | ✅ Confirmé par le prof |
-| 13 provinces/territoires, 2023-2025 | `data/clean/*.csv` | 🟡 2023-2025 pour Température/Précipitations ; 2021-2023 pour Pollution (voir `data/sources/statistique_canada.md`) |
+| 13 provinces/territoires, 2023-2025 | `data/clean/*.csv` | 🟢 2023-2025 pour Température/Précipitations ; 2022-2024 pour Pollution, confirmé par écrit par le professeur le 02/08 (voir `data/sources/eccc_inventaire_ges.md`) |
 | Données sourcées et documentées | `data/sources/`, `data/limitations.md` | ✅ |
 
 ## Frontend
