@@ -79,3 +79,40 @@ def space_thousands_to_float(series):
         series.astype(str).str.replace('\xa0', '', regex=False).str.replace(' ', '', regex=False),
         errors='coerce'
     )
+
+
+# =====================================================================
+# Connexion SQL Server — utilise par les scripts import_*.py
+# =====================================================================
+#
+# IMPORTANT : ceci cible l'instance LOCALE (SQL Server Express via SSMS),
+# pas Azure. Sur Azure, la chaine de connexion change (authentification
+# SQL, pas Windows ; port 1433 ; nom de serveur *.database.windows.net).
+# Ne pas reutiliser cette fonction telle quelle pour Azure — Bloc 3,
+# plus tard.
+#
+# Ajuste SERVER_LOCAL si ton instance SQL Server Express a un nom
+# different (visible dans SSMS, Explorateur d'objets, tout en haut).
+
+SERVER_LOCAL = r"LAPTOP-G7JDT0PL\SQLEXPRESS"
+
+
+def get_connection(database):
+    """
+    Ouvre une connexion pyodbc vers une base locale, en authentification
+    Windows (Trusted_Connection) — la meme methode que celle utilisee
+    par SSMS quand tu t'y connectais sans mot de passe.
+
+    Necessite : pip install pyodbc --break-system-packages
+    Necessite aussi le pilote ODBC "ODBC Driver 17 for SQL Server"
+    (ou 18) installe sur la machine — generalement deja present si
+    SSMS est installe.
+    """
+    import pyodbc
+    conn_str = (
+        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+        f"SERVER={SERVER_LOCAL};"
+        f"DATABASE={database};"
+        f"Trusted_Connection=yes;"
+    )
+    return pyodbc.connect(conn_str)
