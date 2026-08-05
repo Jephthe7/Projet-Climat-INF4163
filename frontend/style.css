@@ -1,0 +1,1858 @@
+/* =====================================================
+   BAROMETRE CLIMAT CANADA
+   GREEN SOFT
+   ECO-DATA & CLIMATE DASHBOARD
+===================================================== */
+
+
+/* ================= VARIABLES ================= */
+
+:root {
+
+    --background: #E9F1EC;
+
+    --surface: #FCFEFC;
+
+    --primary: #0F172A;
+
+    --secondary: #0D9488;
+
+    --accent: #F97316;
+
+    --text: #334155;
+
+    --muted: #64748B;
+
+    --border: #E2E8F0;
+
+
+    --temperature:
+    linear-gradient(
+        135deg,
+        #0D9488,
+        #F97316
+    );
+
+
+    --pollution:
+    linear-gradient(
+        135deg,
+        #F97316,
+        #DC2626
+    );
+
+
+    --rain:
+    linear-gradient(
+        135deg,
+        #0D9488,
+        #0284C7
+    );
+
+
+    --shadow:
+    0 20px 50px rgba(15,23,42,.08);
+
+
+    --radius:22px;
+
+}
+
+
+
+
+
+/* ================= RESET ================= */
+
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+
+
+html{
+
+scroll-behavior:smooth;
+
+}
+
+
+
+body{
+
+
+font-family:"Inter",Arial,sans-serif;
+
+background:var(--background);
+
+color:var(--text);
+
+
+}
+
+
+
+
+
+/* ================= NAVBAR ================= */
+
+
+header{
+
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+z-index:999;
+
+
+}
+
+
+
+.navbar{
+
+
+height:82px;
+
+padding:0 8%;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+
+
+background:
+
+rgba(255,255,255,.8);
+
+
+
+backdrop-filter:
+
+blur(15px);
+
+
+
+border-bottom:
+
+1px solid rgba(226,232,240,.8);
+
+
+
+}
+
+
+
+
+.brand{
+
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+
+font-weight:800;
+
+letter-spacing:1px;
+
+color:var(--primary);
+
+
+}
+
+
+
+.brand img{
+
+
+width:45px;
+
+height:45px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+
+}
+
+
+
+.nav-actions{
+
+display:flex;
+
+align-items:center;
+
+gap:22px;
+
+}
+
+
+.nav-links{
+
+
+display:flex;
+
+gap:25px;
+
+list-style:none;
+
+
+}
+
+
+.theme-toggle{
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+border:1px solid var(--border);
+
+background:var(--surface);
+
+color:var(--primary);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.theme-toggle:hover{
+
+transform:rotate(15deg);
+
+border-color:var(--secondary);
+
+color:var(--secondary);
+
+}
+
+
+
+.nav-links a{
+
+
+text-decoration:none;
+
+color:var(--text);
+
+font-size:14px;
+
+font-weight:500;
+
+transition:.3s;
+
+
+}
+
+
+
+.nav-links a:hover,
+.nav-links .active{
+
+
+color:var(--secondary);
+
+}
+
+
+
+.menu-btn{
+
+
+display:none;
+
+background:none;
+
+border:0;
+
+font-size:25px;
+
+}
+
+
+
+
+
+
+/* ================= HERO ================= */
+
+
+.hero{
+
+
+height:100vh;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:40px;
+
+
+padding:0 8%;
+
+position:relative;
+
+overflow:hidden;
+
+
+
+background:
+
+
+linear-gradient(
+
+rgba(15,23,42,.75),
+
+rgba(13,148,136,.65)
+
+),
+
+
+
+url("assets/hero.jpg");
+
+
+
+background-size:cover;
+
+background-position:center;
+
+
+}
+
+
+/* --- Ticker decoratif en arriere-plan du hero --- */
+
+.hero-ticker{
+
+position:absolute;
+
+inset:0;
+
+display:flex;
+
+align-items:center;
+
+overflow:hidden;
+
+z-index:0;
+
+pointer-events:none;
+
+}
+
+.hero-ticker-track{
+
+display:flex;
+
+gap:90px;
+
+white-space:nowrap;
+
+font-size:6.5vw;
+
+font-weight:800;
+
+text-transform:uppercase;
+
+letter-spacing:2px;
+
+color:rgba(255,255,255,.08);
+
+animation:heroTickerScroll 30s linear infinite;
+
+}
+
+@keyframes heroTickerScroll{
+
+from{ transform:translateX(0); }
+
+to{ transform:translateX(-50%); }
+
+}
+
+
+
+.hero-overlay{
+
+
+max-width:640px;
+
+color:white;
+
+position:relative;
+
+z-index:1;
+
+animation:
+
+fadeUp 1s ease;
+
+
+}
+
+
+/* --- Effet planete/orbites en arriere-plan du hero --- */
+
+.hero-orbits{
+
+position:absolute;
+
+inset:0;
+
+z-index:0;
+
+overflow:hidden;
+
+pointer-events:none;
+
+}
+
+.orbit-ring{
+
+position:absolute;
+
+border-radius:50%;
+
+border:1px solid rgba(45,212,191,.16);
+
+}
+
+.ring-1{
+
+width:900px;
+
+height:900px;
+
+top:-320px;
+
+right:-360px;
+
+}
+
+.ring-2{
+
+width:640px;
+
+height:640px;
+
+top:-140px;
+
+right:-160px;
+
+border-color:rgba(45,212,191,.22);
+
+}
+
+.ring-3{
+
+width:420px;
+
+height:420px;
+
+top:30px;
+
+right:10px;
+
+border-color:rgba(249,115,22,.18);
+
+}
+
+.orbit-star{
+
+position:absolute;
+
+width:4px;
+
+height:4px;
+
+border-radius:50%;
+
+background:#5EEAD4;
+
+box-shadow:0 0 8px rgba(94,234,212,.8);
+
+animation:orbitTwinkle 3.5s ease-in-out infinite;
+
+}
+
+.s1{ top:12%; right:30%; animation-delay:0s; }
+.s2{ top:22%; right:12%; animation-delay:.6s; }
+.s3{ top:38%; right:38%; animation-delay:1.2s; }
+.s4{ top:55%; right:8%; animation-delay:1.8s; width:3px; height:3px; }
+.s5{ top:8%; right:6%; animation-delay:2.4s; width:3px; height:3px; }
+
+@keyframes orbitTwinkle{
+
+0%,100%{ opacity:.2; transform:scale(1); }
+
+50%{ opacity:1; transform:scale(1.6); }
+
+}
+
+
+/* --- Panneau visuel a droite du hero (carte du Canada) --- */
+
+.hero-visual{
+
+position:relative;
+
+z-index:1;
+
+flex-shrink:0;
+
+width:420px;
+
+}
+
+.hero-map{
+
+position:relative;
+
+width:100%;
+
+}
+
+.hero-map-svg{
+
+width:100%;
+
+height:auto;
+
+display:block;
+
+overflow:visible;
+
+}
+
+.hero-map-province path{
+
+fill:rgba(255,255,255,.05);
+
+stroke:rgba(255,255,255,.22);
+
+stroke-width:1.4;
+
+stroke-linejoin:round;
+
+transition:.3s;
+
+}
+
+.hero-map-province.highlighted path{
+
+fill:rgba(45,212,191,.22);
+
+stroke:#2DD4BF;
+
+stroke-width:1.8;
+
+}
+
+.hero-map-pins{
+
+position:absolute;
+
+inset:0;
+
+}
+
+.hero-pin{
+
+position:absolute;
+
+transform:translate(-50%,-50%);
+
+display:flex;
+
+align-items:center;
+
+gap:7px;
+
+}
+
+.pin-dot{
+
+width:8px;
+
+height:8px;
+
+border-radius:50%;
+
+background:#F97316;
+
+box-shadow:0 0 0 4px rgba(249,115,22,.22);
+
+animation:pinPulse 2.4s infinite;
+
+flex-shrink:0;
+
+}
+
+.pin-dot.accent{
+
+background:#2DD4BF;
+
+box-shadow:0 0 0 4px rgba(45,212,191,.25);
+
+}
+
+@keyframes pinPulse{
+
+0%{ box-shadow:0 0 0 0 rgba(249,115,22,.5); }
+
+70%{ box-shadow:0 0 0 9px rgba(249,115,22,0); }
+
+100%{ box-shadow:0 0 0 0 rgba(249,115,22,0); }
+
+}
+
+.pin-label{
+
+font-size:11px;
+
+font-weight:600;
+
+color:rgba(255,255,255,.88);
+
+white-space:nowrap;
+
+text-shadow:0 1px 4px rgba(0,0,0,.65);
+
+}
+
+@media(max-width:1150px){
+
+.hero-visual,
+.hero-orbits{
+
+display:none;
+
+}
+
+}
+
+
+
+.tag{
+
+
+display:inline-flex;
+
+gap:10px;
+
+align-items:center;
+
+
+background:
+
+rgba(255,255,255,.15);
+
+
+
+padding:10px 18px;
+
+
+border-radius:40px;
+
+
+font-size:13px;
+
+
+}
+
+
+
+.hero h1{
+
+
+font-size:75px;
+
+line-height:1.05;
+
+margin:30px 0;
+
+
+}
+
+
+
+.hero h1 span{
+
+
+color:#FDBA74;
+
+
+}
+
+
+
+.hero p{
+
+
+font-size:18px;
+
+line-height:1.7;
+
+max-width:620px;
+
+
+}
+
+
+
+.btn{
+
+
+display:inline-flex;
+
+align-items:center;
+
+gap:12px;
+
+
+margin-top:35px;
+
+
+padding:16px 35px;
+
+
+background:var(--accent);
+
+
+color:white;
+
+
+border-radius:50px;
+
+
+text-decoration:none;
+
+
+font-weight:700;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.btn:hover{
+
+
+transform:translateY(-5px);
+
+
+box-shadow:
+
+0 15px 30px rgba(249,115,22,.4);
+
+
+}
+
+
+
+
+
+
+/* ================= KPI ================= */
+
+
+.kpis{
+
+
+width:84%;
+
+margin:-70px auto 100px;
+
+
+display:grid;
+
+
+grid-template-columns:repeat(3,1fr);
+
+
+gap:25px;
+
+
+position:relative;
+
+
+}
+
+
+
+.kpi-card{
+
+
+background:
+
+rgba(255,255,255,.85);
+
+
+
+backdrop-filter:
+
+blur(12px);
+
+
+
+border:1px solid var(--border);
+
+
+padding:30px;
+
+
+border-radius:var(--radius);
+
+
+display:flex;
+
+
+align-items:center;
+
+
+gap:25px;
+
+
+box-shadow:var(--shadow);
+
+
+transition:.35s;
+
+
+}
+
+
+
+.kpi-card:hover{
+
+
+transform:translateY(-10px);
+
+
+}
+
+
+
+.kpi-card strong{
+
+
+display:block;
+
+font-size:32px;
+
+color:var(--primary);
+
+
+}
+
+
+
+.kpi-card p{
+
+
+color:var(--muted);
+
+font-size:14px;
+
+
+}
+
+
+
+.icon{
+
+
+width:65px;
+
+height:65px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+border-radius:18px;
+
+
+color:white;
+
+font-size:25px;
+
+
+}
+
+
+
+.icon.teal{
+
+
+background:var(--secondary);
+
+
+}
+
+
+.icon.orange{
+
+
+background:var(--accent);
+
+
+}
+
+
+.icon.blue{
+
+
+background:#0284C7;
+
+
+}
+
+
+
+
+
+
+/* ================= DATA CARDS ================= */
+
+
+.data-overview{
+
+
+width:84%;
+
+margin:auto;
+
+
+}
+
+
+
+.data-overview h2{
+
+
+font-size:35px;
+
+color:var(--primary);
+
+margin-bottom:40px;
+
+
+}
+
+
+
+.data-grid{
+
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+
+}
+
+
+
+.data-card{
+
+
+background:white;
+
+
+padding:35px;
+
+
+border-radius:var(--radius);
+
+
+box-shadow:var(--shadow);
+
+
+transition:.4s;
+
+
+}
+
+
+
+.data-card:hover{
+
+
+transform:
+
+translateY(-12px);
+
+
+}
+
+
+
+.data-card i{
+
+
+font-size:40px;
+
+margin-bottom:20px;
+
+
+}
+
+
+
+.temperature-card i{
+
+
+color:var(--secondary);
+
+
+}
+
+
+
+.pollution-card i{
+
+
+color:var(--accent);
+
+
+}
+
+
+
+.rain-card i{
+
+
+color:#0284C7;
+
+
+}
+
+
+
+.data-card h3{
+
+
+font-size:25px;
+
+color:var(--primary);
+
+
+}
+
+
+
+.data-card p{
+
+
+margin:15px 0;
+
+
+color:var(--muted);
+
+
+line-height:1.6;
+
+
+}
+
+
+
+.data-card a{
+
+
+color:var(--secondary);
+
+
+font-weight:600;
+
+text-decoration:none;
+
+
+}
+
+
+
+
+
+
+
+/* ================= DASHBOARD ================= */
+
+
+.dashboard-section{
+
+
+width:84%;
+
+margin:120px auto;
+
+
+}
+
+
+
+.section-title h2{
+
+
+font-size:35px;
+
+color:var(--primary);
+
+
+}
+
+
+
+.section-title p{
+
+
+color:var(--muted);
+
+
+margin-top:8px;
+
+
+}
+
+
+
+.dashboard-box{
+
+
+margin-top:35px;
+
+
+background:white;
+
+
+padding:25px;
+
+
+border-radius:var(--radius);
+
+
+box-shadow:var(--shadow);
+
+
+}
+
+
+
+.dashboard-box iframe{
+
+
+width:100%;
+
+
+height:560px;
+
+
+border:none;
+
+
+border-radius:15px;
+
+
+}
+
+
+
+
+
+
+/* ================= TABLE ================= */
+
+
+.table-container{
+
+
+background:white;
+
+
+padding:30px;
+
+
+border-radius:var(--radius);
+
+
+box-shadow:var(--shadow);
+
+
+overflow:auto;
+
+
+}
+
+
+
+table{
+
+
+width:100%;
+
+border-collapse:collapse;
+
+
+}
+
+
+
+th{
+
+
+padding:18px;
+
+background:#F1F5F9;
+
+color:var(--primary);
+
+text-align:left;
+
+
+}
+
+
+
+td{
+
+
+padding:16px;
+
+border-bottom:1px solid var(--border);
+
+
+}
+
+
+
+tr:hover{
+
+
+background:#F0FDFA;
+
+
+}
+
+
+
+
+
+
+/* ================= TEAM ================= */
+
+
+.team-grid{
+
+
+display:grid;
+
+
+grid-template-columns:repeat(3,1fr);
+
+
+gap:30px;
+
+
+}
+
+
+
+.member-card{
+
+
+background:
+
+rgba(255,255,255,.8);
+
+
+
+backdrop-filter:blur(12px);
+
+
+border:1px solid var(--border);
+
+
+padding:35px;
+
+
+text-align:center;
+
+
+border-radius:var(--radius);
+
+
+box-shadow:var(--shadow);
+
+
+transition:.4s;
+
+
+}
+
+
+
+.member-card:hover{
+
+
+transform:translateY(-10px);
+
+
+}
+
+
+
+.member-card img{
+
+
+width:140px;
+
+height:140px;
+
+
+border-radius:50%;
+
+
+object-fit:cover;
+
+
+border:5px solid #CCFBF1;
+
+
+}
+
+
+
+.member-card h3{
+
+
+margin-top:20px;
+
+
+color:var(--primary);
+
+
+}
+
+
+
+.member-card span{
+
+
+color:var(--secondary);
+
+
+font-weight:700;
+
+
+}
+
+
+
+.member-card p{
+
+
+margin-top:15px;
+
+color:var(--muted);
+
+
+line-height:1.6;
+
+
+}
+
+
+
+
+
+
+/* ================= FOOTER ================= */
+
+
+footer{
+
+
+margin-top:100px;
+
+
+padding:35px;
+
+
+text-align:center;
+
+
+background:var(--primary);
+
+
+color:white;
+
+
+}
+
+
+
+
+
+
+/* ================= ANIMATION ================= */
+
+
+@keyframes fadeUp{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+
+}
+
+
+
+
+
+
+/* ================= RESPONSIVE ================= */
+
+
+@media(max-width:1000px){
+
+
+.nav-links{
+
+display:none;
+
+}
+
+
+
+.menu-btn{
+
+display:block;
+
+}
+
+
+
+.kpis,
+.data-grid,
+.team-grid{
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+
+.hero h1{
+
+
+font-size:50px;
+
+
+}
+
+
+
+.dashboard-section,
+.data-overview,
+.kpis{
+
+
+width:90%;
+
+
+}
+
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+.hero h1{
+
+
+font-size:38px;
+
+
+}
+
+
+
+.hero p{
+
+
+font-size:15px;
+
+
+}
+
+
+
+.dashboard-box iframe{
+
+
+height:350px;
+
+
+}
+
+
+}
+/* =====================================================
+   AJOUTS — système d'onglets + réduction du "trop blanc"
+===================================================== */
+
+/* --- Vrais onglets : un seul panneau visible à la fois --- */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* --- Logo dans la barre de navigation --- */
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+/* --- Teintes légères par domaine pour casser le "mur blanc" --- */
+#temperature { background: linear-gradient(180deg, #EAF6F4 0%, var(--background) 240px); }
+#pollution   { background: linear-gradient(180deg, #FFF0E9 0%, var(--background) 240px); }
+#precipitations { background: linear-gradient(180deg, #EAF4FA 0%, var(--background) 240px); }
+#analyse, #equipe { background: var(--background); }
+
+/* --- Mini-tableaux de résultats sous chaque dashboard Power BI --- */
+.mini-results {
+  margin-top: 32px;
+}
+.mini-results h3 {
+  font-size: 16px;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+/* =====================================================
+   APERÇU DES RÉSULTATS CLÉS — dans le prolongement du hero
+===================================================== */
+
+.highlights {
+  width: 100%;
+  padding: 80px 8% 100px;
+  margin-top: -40px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(15,23,42,.97), rgba(13,148,136,.85));
+}
+
+.section-title-inline {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.section-title-inline h2 {
+  color: #fff;
+  font-size: 32px;
+}
+
+.section-title-inline p {
+  color: rgba(255,255,255,.75);
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.highlights-grid {
+  width: 84%;
+  margin: 45px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.highlight-card {
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  transition: .35s;
+}
+
+.highlight-card:hover {
+  transform: translateY(-8px);
+}
+
+.hl-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--secondary);
+  background: rgba(13,148,136,.1);
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.hl-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-top: 16px;
+  line-height: 1.3;
+}
+
+.hl-metric {
+  font-size: 26px;
+  font-weight: 800;
+  color: #F97316;
+  margin-top: 6px;
+}
+
+.hl-caption {
+  font-size: 13px;
+  color: #64748B;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+@media(max-width:1000px){
+  .highlights-grid{
+    grid-template-columns: repeat(2,1fr);
+    width: 90%;
+  }
+}
+
+@media(max-width:600px){
+  .highlights-grid{
+    grid-template-columns: 1fr;
+  }
+  .section-title-inline h2{
+    font-size: 26px;
+  }
+}
+
+/* =====================================================
+   CONSOLE SQL EN DIRECT — onglet "Test en temps réel"
+===================================================== */
+
+.sql-console {
+  margin-top: 35px;
+  background: #0B1220;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  color: #E2E8F0;
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 22px;
+  background: #0F172A;
+  border-bottom: 1px solid #1E293B;
+}
+
+.console-header .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.console-header .dot.red { background: #EF4444; }
+.console-header .dot.yellow { background: #F59E0B; }
+.console-header .dot.green { background: #22C55E; }
+
+.console-title {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.console-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #1E293B;
+}
+
+.console-controls label {
+  font-size: 14px;
+  color: #CBD5E1;
+}
+
+.console-controls select {
+  flex: 1;
+  min-width: 240px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid #1E293B;
+  background: #111827;
+  color: #E2E8F0;
+  font-size: 14px;
+}
+
+#sqlRunBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--secondary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+#sqlRunBtn:hover {
+  background: #0b7a70;
+  transform: translateY(-2px);
+}
+
+.console-output {
+  margin: 0;
+  padding: 22px;
+  font-family: "Courier New", monospace;
+  font-size: 13.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #4ADE80;
+  min-height: 180px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+/* =====================================================
+   MODE SOMBRE — activé via [data-theme="dark"] sur <html>
+===================================================== */
+
+body, .navbar, .kpi-card, .data-card, .dashboard-box,
+.table-container, footer, .member-card {
+  transition: background .35s ease, color .35s ease, border-color .35s ease;
+}
+
+[data-theme="dark"] {
+  --background: #0B1220;
+  --surface: #111827;
+  --primary: #F1F5F9;
+  --secondary: #2DD4BF;
+  --accent: #FB923C;
+  --text: #CBD5E1;
+  --muted: #94A3B8;
+  --border: #1E293B;
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(15,23,42,.85);
+  border-bottom-color: rgba(30,41,59,.8);
+}
+
+[data-theme="dark"] .kpi-card,
+[data-theme="dark"] .member-card {
+  background: rgba(17,24,39,.85);
+}
+
+[data-theme="dark"] .data-card,
+[data-theme="dark"] .dashboard-box,
+[data-theme="dark"] .table-container {
+  background: var(--surface);
+}
+
+[data-theme="dark"] th {
+  background: #1E293B;
+}
+
+[data-theme="dark"] tr:hover {
+  background: #0F1E2E;
+}
+
+[data-theme="dark"] footer {
+  background: #000814;
+}
+
+[data-theme="dark"] #temperature {
+  background: linear-gradient(180deg, #0d2b28 0%, var(--background) 240px);
+}
+[data-theme="dark"] #pollution {
+  background: linear-gradient(180deg, #2a180f 0%, var(--background) 240px);
+}
+[data-theme="dark"] #precipitations {
+  background: linear-gradient(180deg, #0d2130 0%, var(--background) 240px);
+}
+[data-theme="dark"] #analyse,
+[data-theme="dark"] #equipe,
+[data-theme="dark"] #test-temps-reel {
+  background: var(--background);
+}
