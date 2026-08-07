@@ -1184,6 +1184,14 @@ box-shadow:var(--shadow);
 
 
 
+.chart-container{
+
+position:relative;
+width:100%;
+height:420px;
+
+}
+
 .dashboard-box iframe{
 
 

@@ -15,7 +15,7 @@ Execution : python import_pollution.py
 
 import csv
 from pathlib import Path
-from common import get_connection
+from common import get_connection_azure
 
 CSV_PATH = Path(__file__).parent.parent / "data" / "clean" / "pollution_clean.csv"
 DATABASE = "PollutionDB"
@@ -55,7 +55,7 @@ def importer():
         if len(lignes) != 13:
             print(f"  /!\\ AVERTISSEMENT : {len(lignes)} lignes pour {annee} (13 attendues)")
 
-    conn = get_connection(DATABASE)
+    conn = get_connection_azure(DATABASE)
     cursor = conn.cursor()
 
     try:

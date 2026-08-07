@@ -6,6 +6,7 @@
 <title>Baromètre Climat Canada — GREEN SOFT</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -356,8 +357,9 @@
   </div>
 
   <div class="dashboard-box">
-    <!-- Remplacer par le lien "Publier sur le web" de Power BI une fois la connexion faite -->
-    <iframe src="about:blank" title="Power BI — Température"></iframe>
+    <div class="chart-container">
+      <canvas id="chart-temperature"></canvas>
+    </div>
   </div>
 
   <div class="mini-results">
@@ -379,7 +381,9 @@
   </div>
 
   <div class="dashboard-box">
-    <iframe src="about:blank" title="Power BI — Pollution"></iframe>
+    <div class="chart-container">
+      <canvas id="chart-pollution"></canvas>
+    </div>
   </div>
 
   <div class="mini-results">
@@ -401,7 +405,9 @@
   </div>
 
   <div class="dashboard-box">
-    <iframe src="about:blank" title="Power BI — Précipitations"></iframe>
+    <div class="chart-container">
+      <canvas id="chart-precipitations"></canvas>
+    </div>
   </div>
 
   <div class="mini-results">

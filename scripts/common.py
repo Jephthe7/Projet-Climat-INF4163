@@ -116,3 +116,53 @@ def get_connection(database):
         f"Trusted_Connection=yes;"
     )
     return pyodbc.connect(conn_str)
+
+
+# ============================================================
+# Connexion Azure SQL (migration cloud — voir docs/DAT section Azure)
+# ============================================================
+
+import os
+
+SERVER_AZURE = "climat-inf4163-sql.database.windows.net"
+
+
+def get_connection_azure(database):
+    """
+    Ouvre une connexion pyodbc vers Azure SQL Database, en authentification
+    SQL (login/mot de passe), seule methode supportee par Azure SQL —
+    contrairement a get_connection() ci-dessus qui utilise l'authentification
+    Windows pour le serveur local.
+
+    Le login et le mot de passe sont lus depuis les variables d'environnement
+    AZURE_SQL_USER et AZURE_SQL_PASSWORD, jamais codes en dur ici, pour ne
+    jamais risquer de les committer dans Git (meme logique que api/.env).
+
+    A definir avant l'execution, dans le meme terminal PowerShell :
+        $env:AZURE_SQL_USER="adminclimat"
+        $env:AZURE_SQL_PASSWORD="ton_mot_de_passe"
+
+    Necessite : pip install pyodbc --break-system-packages
+    Pilote recommande pour Azure : "ODBC Driver 18 for SQL Server"
+    (telechargeable depuis le site Microsoft si pas deja installe).
+    """
+    import pyodbc
+
+    try:
+        user = os.environ["AZURE_SQL_USER"]
+        password = os.environ["AZURE_SQL_PASSWORD"]
+    except KeyError as e:
+        raise RuntimeError(
+            f"Variable d'environnement manquante : {e}. "
+            f"Definis AZURE_SQL_USER et AZURE_SQL_PASSWORD dans ce terminal "
+            f"avant de relancer le script (voir docstring de get_connection_azure)."
+        ) from e
+
+    conn_str = (
+        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+        f"SERVER={SERVER_AZURE};"
+        f"DATABASE={database};"
+        f"UID={user};PWD={password};"
+        f"Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+    return pyodbc.connect(conn_str)
