@@ -70,8 +70,8 @@ première chose à consulter.
 |---|---|---|
 | Plan de Gestion et d'Organisation du Projet (PGOP) — comment l'équipe s'organise | [PGOP.pdf](docs/PGOP/PGOP_v7.pdf) | [PGOP.docx](docs/PGOP/PGOP_v7.docx) |
 | Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/BluePrint/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/BluePrint/Blueprint_Projet_v1.docx) |
-| Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v3.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v3.docx) |
-| Squelette du rapport final — comment le projet a été réalisé | [Rapport.pdf](rapport/Rapport_v0.6.pdf) | [Rapport.docx](rapport/Rapport_v0.6.docx) |
+| Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v4.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v4.docx) |
+| Rapport final — comment le projet a été réalisé | — (exporter le PDF depuis Word une fois finalisé) | [Rapport.docx](rapport/Rapport_v0.6.docx) |
 | Matrice de traçabilité — chaque exigence de l'énoncé → où elle est satisfaite | [matrice_tracabilite.md](matrice_tracabilite.md) | — |
 | Énoncé officiel du professeur | [Project_UQO_INF4163.pdf](docs/Consignes/Project_UQO_INF4163.pdf) | — |
 | Ordre du jour — réunion de lancement | [Ordre_du_jour.md](docs/Ordre_du_jour_reunion_lancement.md) | — |
@@ -88,5 +88,42 @@ Voir le carnet de bord (section 15 du PGOP) pour l'état de chaque phase.
 
 ## Installation / exécution
 
-*(À compléter dès que les choix techniques du frontend et de l'hébergement seront
-faits — Phase 2 du PGOP.)*
+### API (Node.js/Express)
+
+```bash
+cd api
+npm install
+cp .env.example .env
+```
+
+Ouvrir `.env` et remplir `DB_PASSWORD` (voir `api/README.md` pour le détail des
+variables — valeurs Azure par défaut, alternative locale en commentaire). Puis :
+
+```bash
+npm start
+```
+
+Doit afficher `API demarree sur http://localhost:3000`.
+
+### Frontend
+
+Aucune installation nécessaire (HTML/CSS/JS pur, pas de build). Ouvrir
+`frontend/index.html` avec un serveur local (ex. l'extension VS Code
+**Live Server**) plutôt que de double-cliquer dessus directement, sinon les
+appels à l'API échouent (restriction du navigateur sur les fichiers `file://`).
+Par défaut, `API_BASE` dans `frontend/app.js` pointe vers l'API de production
+(Render) ; pour tester contre une API locale, changer temporairement cette
+constante en `http://localhost:3000`.
+
+### Bases de données
+
+Scripts SQL dans `sql/<base>/` (CreateTable, Views, Procedures, Triggers — à
+exécuter dans cet ordre, dans SSMS ou Azure Data Studio). Scripts Python
+d'import dans `scripts/` (nécessite `pip install pyodbc --break-system-packages`
+et le pilote ODBC 17 ou 18 pour SQL Server) : `python import_temperature.py`,
+`import_pollution.py`, `import_precipitations.py`.
+
+### Power BI
+
+Ouvrir `powerbi/ProjetClimat.pbix` dans Power BI Desktop. Si les identifiants
+de connexion Azure SQL sont demandés, voir `powerbi/README.md`.
