@@ -12,11 +12,29 @@ services/resultatsService.js → formatage (libellés français, vérifie qu'on 
 repositories/resultatsRepository.js → assemble les 11 résultats des 3 bases
 repositories/temperatureRepository.js, pollutionRepository.js, precipitationsRepository.js
                               → appels bruts aux 11 procédures stockées
+routes/graphiques.js          → couche HTTP (GET /api/temperature, /api/pollution, /api/precipitations)
+repositories/graphiquesRepository.js → lignes brutes des 3 vues SQL (vwTemperature,
+                                vwPollution, vwPrecipitations), pour les graphiques
+                                Chart.js du frontend — pas les mêmes données que
+                                /resultats (données déjà agrégées par les procédures)
 config/db.js                 → gestion des connexions (1 pool par base)
 ```
 
 Flux conforme à DAT section 10 : *"le repository assemble les 11
 résultats, le service les formate, la route les renvoie en JSON"*.
+
+## Endpoints disponibles
+
+| Route | Renvoie |
+|---|---|
+| `GET /resultats` | Les 11 résultats analytiques (année/mois/province les plus ou moins extrêmes) |
+| `GET /api/temperature` | Lignes brutes de `vwTemperature` (province, mois, année, température) |
+| `GET /api/pollution` | Lignes brutes de `vwPollution` (province, année, émissions) |
+| `GET /api/precipitations` | Lignes brutes de `vwPrecipitations` (province, année, précipitations) |
+
+Les 3 routes `/api/*` existent pour alimenter les graphiques Chart.js du frontend (moyenne par
+province calculée côté client), en complément de `/resultats` qui sert le tableau de résultats
+analytiques.
 
 ## Installation (première fois)
 
