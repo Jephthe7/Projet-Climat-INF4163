@@ -337,15 +337,13 @@ background:
 
 linear-gradient(
 
-rgba(15,23,42,.75),
+135deg,
 
-rgba(13,148,136,.65)
+rgba(15,23,42,.92),
 
-),
+rgba(13,148,136,.85)
 
-
-
-url("assets/hero.jpg");
+);
 
 
 
