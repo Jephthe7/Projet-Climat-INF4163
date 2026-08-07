@@ -6,7 +6,7 @@
 // Pendant les tests avec Aka (tunnel ngrok) : remplacer par l'URL ngrok actuelle,
 // ex. "https://abc123.ngrok-free.app" (change à chaque redémarrage du tunnel).
 // Une fois l'API déployée en ligne (Azure), remplacer par son URL publique définitive.
-const API_BASE = "https://coach-chief-appealing.ngrok-free.dev";
+const API_BASE = "http://localhost:3000";
 
 /* ================= SYSTEME D'ONGLETS ================= */
 
@@ -265,6 +265,159 @@ async function loadResults() {
 }
 
 loadResults();
+
+/* ================= GRAPHIQUES DYNAMIQUES (Chart.js, connectes a Azure SQL via l'API) ================= */
+
+// Palette du site — memes couleurs que le CSS (--secondary teal, --accent
+// orange, bleu), pour que les graphiques restent visuellement coherents
+// avec le reste du frontend plutot que d'utiliser les couleurs par defaut
+// de Chart.js.
+const PALETTE = {
+  teal: "#0D9488",
+  orange: "#F97316",
+  bleu: "#0284C7",
+  navy: "#0F172A",
+  grille: "rgba(15, 23, 42, 0.08)",
+};
+
+// Regroupe une liste de lignes { CodeProvince, NomProvince, valeur }
+// par province, calcule la moyenne (en ignorant les NULL, utile pour
+// PrecipitationsDB ou 5 provinces n'ont aucune donnee — voir
+// data/limitations.md), puis trie du plus grand au plus petit.
+function moyenneParProvince(lignes, champValeur) {
+  const parProvince = new Map();
+
+  lignes.forEach((ligne) => {
+    const valeur = ligne[champValeur];
+    if (valeur === null || valeur === undefined) return; // ignore les NULL
+
+    const cle = ligne.CodeProvince;
+    if (!parProvince.has(cle)) {
+      parProvince.set(cle, { nom: ligne.NomProvince, total: 0, count: 0 });
+    }
+    const entree = parProvince.get(cle);
+    entree.total += valeur;
+    entree.count += 1;
+  });
+
+  const resultat = Array.from(parProvince.entries()).map(([code, { nom, total, count }]) => ({
+    code,
+    nom,
+    moyenne: total / count,
+  }));
+
+  resultat.sort((a, b) => b.moyenne - a.moyenne);
+  return resultat;
+}
+
+// Cree un degrade vertical (couleur pleine en haut, plus transparente en
+// bas) pour une barre — plus soigne qu'un aplat de couleur unique.
+function dégradéBarre(ctx, chartArea, couleurHex) {
+  if (!chartArea) return couleurHex;
+  const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+  gradient.addColorStop(0, couleurHex);
+  gradient.addColorStop(1, couleurHex + "55"); // transparence en bas
+  return gradient;
+}
+
+// Cree un graphique a barres "moyenne par province" dans le canvas
+// identifie par canvasId. Retourne l'instance Chart.js (pas utilise
+// pour l'instant, mais garde la porte ouverte pour un futur filtre
+// annee qui appellerait chart.update()).
+function creerGraphiqueBarres(canvasId, donnees, { couleur, unite, titre }) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+
+  return new Chart(canvas.getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: donnees.map((d) => d.code),
+      datasets: [
+        {
+          label: titre,
+          data: donnees.map((d) => Math.round(d.moyenne * 100) / 100),
+          backgroundColor: (context) => {
+            const { ctx, chartArea } = context.chart;
+            return dégradéBarre(ctx, chartArea, couleur);
+          },
+          borderRadius: 6,
+          maxBarThickness: 42,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 700, easing: "easeOutQuart" },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: PALETTE.navy,
+          padding: 10,
+          cornerRadius: 8,
+          callbacks: {
+            title: (items) => donnees[items[0].dataIndex].nom,
+            label: (item) => `${item.formattedValue} ${unite}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: PALETTE.navy, font: { weight: "600" } },
+        },
+        y: {
+          grid: { color: PALETTE.grille },
+          ticks: { color: PALETTE.navy },
+        },
+      },
+    },
+  });
+}
+
+async function chargerGraphique(endpoint, canvasId, champValeur, options) {
+  try {
+    const response = await fetch(`${API_BASE}/api/${endpoint}`, {
+      headers: { "ngrok-skip-browser-warning": "true" },
+    });
+    if (!response.ok) throw new Error(`API inaccessible (${endpoint})`);
+    const lignes = await response.json();
+
+    const parProvince = moyenneParProvince(lignes, champValeur);
+    creerGraphiqueBarres(canvasId, parProvince, options);
+  } catch (error) {
+    console.log(`Chargement du graphique ${endpoint} impossible :`, error);
+    const canvas = document.getElementById(canvasId);
+    if (canvas) {
+      const wrapper = canvas.closest(".chart-container");
+      if (wrapper) {
+        wrapper.innerHTML =
+          `<p style="text-align:center;padding-top:40px;color:#64748b;">` +
+          `Graphique indisponible pour l'instant (API injoignable).</p>`;
+      }
+    }
+  }
+}
+
+function chargerTousLesGraphiques() {
+  chargerGraphique("temperature", "chart-temperature", "TemperatureMoyenne", {
+    couleur: PALETTE.orange,
+    unite: "°C",
+    titre: "Température moyenne (°C)",
+  });
+  chargerGraphique("pollution", "chart-pollution", "ValeurMoyenne", {
+    couleur: PALETTE.bleu,
+    unite: "Mt CO2e",
+    titre: "Émissions moyennes (Mt CO2e)",
+  });
+  chargerGraphique("precipitations", "chart-precipitations", "ValeurMoyenne", {
+    couleur: PALETTE.teal,
+    unite: "mm",
+    titre: "Précipitations moyennes (mm)",
+  });
+}
+
+chargerTousLesGraphiques();
 
 /* ================= CONSOLE SQL EN DIRECT (onglet Test en temps réel) ================= */
 

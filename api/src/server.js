@@ -13,6 +13,7 @@ const express = require('express');
 const cors = require('cors');
 
 const resultatsRouter = require('./routes/resultats');
+const graphiquesRouter = require('./routes/graphiques');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/resultats', resultatsRouter);
+app.use('/api', graphiquesRouter);
 
 // 404 générique pour toute route non définie
 app.use((req, res) => {

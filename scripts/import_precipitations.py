@@ -14,7 +14,7 @@ Prerequis / execution : identique a import_temperature.py.
 
 import csv
 from pathlib import Path
-from common import get_connection
+from common import get_connection_azure
 
 CSV_PATH = Path(__file__).parent.parent / "data" / "clean" / "precipitations_clean.csv"
 DATABASE = "PrecipitationsDB"
@@ -67,7 +67,7 @@ def importer():
             print(f"  /!\\ AVERTISSEMENT : {n_null} valeurs NULL pour {annee} "
                   f"({len(PROVINCES_SANS_DONNEES)} attendues)")
 
-    conn = get_connection(DATABASE)
+    conn = get_connection_azure(DATABASE)
     cursor = conn.cursor()
 
     try:

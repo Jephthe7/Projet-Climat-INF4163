@@ -19,7 +19,7 @@ sans ca, relancer le script deux fois dupliquerait toutes les lignes.
 
 import csv
 from pathlib import Path
-from common import get_connection
+from common import get_connection_azure
 
 CSV_PATH = Path(__file__).parent.parent / "data" / "clean" / "temperature_monthly_clean.csv"
 DATABASE = "TemperatureDB"
@@ -55,7 +55,7 @@ def importer():
         if len(lignes) != 156:
             print(f"  /!\\ AVERTISSEMENT : {len(lignes)} lignes pour {annee} (156 attendues)")
 
-    conn = get_connection(DATABASE)
+    conn = get_connection_azure(DATABASE)
     cursor = conn.cursor()
 
     try:
