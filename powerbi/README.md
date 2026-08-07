@@ -1,82 +1,70 @@
-# Power BI — Projet Climat INF4163
+# API — Projet Climat INF4163
 
-## Structure
+API intermédiaire entre le frontend et les 3 bases SQL Server. Nécessaire
+car le navigateur ne peut pas interroger SQL Server (local ou Azure)
+directement — voir DAT section 2.
+
+## Architecture
 
 ```
-powerbi/
-├── ProjetClimat.pbix
-└── README.md
+routes/resultats.js          → couche HTTP (GET /resultats)
+services/resultatsService.js → formatage (libellés français, vérifie qu'on a bien 11 résultats)
+repositories/resultatsRepository.js → assemble les 11 résultats des 3 bases
+repositories/temperatureRepository.js, pollutionRepository.js, precipitationsRepository.js
+                              → appels bruts aux 11 procédures stockées
+routes/graphiques.js          → couche HTTP (GET /api/temperature, /api/pollution, /api/precipitations)
+repositories/graphiquesRepository.js → lignes brutes des 3 vues SQL (vwTemperature,
+                                vwPollution, vwPrecipitations), pour les graphiques
+                                Chart.js du frontend — pas les mêmes données que
+                                /resultats (données déjà agrégées par les procédures)
+config/db.js                 → gestion des connexions (1 pool par base)
 ```
 
-## Fichier
+Flux conforme à DAT section 10 : *"le repository assemble les 11
+résultats, le service les formate, la route les renvoie en JSON"*.
 
-`ProjetClimat.pbix` — rapport Power BI Desktop, 3 pages (Température, Pollution, Précipitations),
-connecté en **DirectQuery** (connexion live, pas un export statique — voir PGOP section 4.2 :
-*« un export statique ne satisferait pas l'exigence 'affichage en direct' »*, et bonus +5%,
-PGOP section 4.4).
+## Endpoints disponibles
 
-## Pourquoi 3 vues SQL plutôt que 9 tables directement
+| Route | Renvoie |
+|---|---|
+| `GET /resultats` | Les 11 résultats analytiques (année/mois/province les plus ou moins extrêmes) |
+| `GET /api/temperature` | Lignes brutes de `vwTemperature` (province, mois, année, température) |
+| `GET /api/pollution` | Lignes brutes de `vwPollution` (province, année, émissions) |
+| `GET /api/precipitations` | Lignes brutes de `vwPrecipitations` (province, année, précipitations) |
 
-Chaque base contient 3 tables annuelles (ex. `Temperature2023`, `Temperature2024`,
-`Temperature2025`). Pour permettre un seul filtre "Année" au lieu de jongler avec 3 tables
-séparées, une vue SQL combine les 3 avec `UNION ALL` :
+Les 3 routes `/api/*` existent pour alimenter les graphiques Chart.js du frontend (moyenne par
+province calculée côté client), en complément de `/resultats` qui sert le tableau de résultats
+analytiques.
 
-- `vwTemperature` (TemperatureDB)
-- `vwPollution` (PollutionDB)
-- `vwPrecipitations` (PrecipitationsDB)
+## Installation (première fois)
 
-Voir `sql/*/SQL_*_Views_v1.sql` pour le code exact.
+```bash
+cd api
+npm install
+cp .env.example .env
+```
 
-**Pourquoi des vues SQL et pas une fusion dans Power Query** (Append Queries) : en mode
-DirectQuery, Power BI doit traduire chaque transformation en requête SQL équivalente
-(« query folding »). Ajouter une colonne calculée puis fusionner plusieurs tables DirectQuery
-via Power Query est le genre d'opération qui échoue ou dégrade la performance. Une vue SQL
-évite complètement ce problème : c'est un objet natif de la base, nativement compatible
-DirectQuery, sans transformation côté Power BI.
+Puis ouvrir `.env` et remplir `DB_PASSWORD` avec le mot de passe du
+login `api_climat` créé dans SQL Server (jamais commité — `.env` est
+dans `.gitignore`).
 
-## Connexion
+## Lancer l'API en local
 
-- **Serveur** : `localhost` (SQL Server Express, local pour l'instant — voir note Azure ci-dessous)
-- **Authentification** : SQL Server, compte dédié en lecture seule (le même que celui utilisé
-  par l'API — accès limité à `db_datareader` + `EXECUTE`, jamais les identifiants du compte
-  personnel)
-- **Mode** : DirectQuery (jamais Import — vérifiable en bas de l'écran Power BI : « Storage Mode:
-  DirectQuery »)
+```bash
+npm start
+```
 
-## Contenu des 3 pages
+Doit afficher `API demarree sur http://localhost:3000`.
 
-| Page | Source | Visuels | Filtres |
-|---|---|---|---|
-| Température | `vwTemperature` | Graphique à barres (moyenne par province) | Slicer Année, Slicer Province |
-| Pollution | `vwPollution` | Graphique à barres (moyenne par province, Mt CO2e) | Slicer Année, Slicer Province |
-| Précipitations | `vwPrecipitations` | Graphique à barres (moyenne par province, mm) + note sur les données manquantes | Slicer Année, Slicer Province |
+## Tester
 
-## Point d'attention — précipitations manquantes
+- `http://localhost:3000/` → doit répondre `{"statut": "API Projet Climat INF4163 — en ligne", ...}` immédiatement, sans toucher aux bases (test que le serveur tourne).
+- `http://localhost:3000/resultats` → doit répondre un tableau JSON de 11 objets (un par procédure stockée). Si erreur 500, vérifier `.env` (mot de passe, mode d'authentification SQL Server activé — voir historique du projet) et que SQL Server est démarré.
 
-5 provinces/territoires (Manitoba, Nouvelle-Écosse, Nunavut, Saskatchewan, Yukon) n'ont aucune
-donnée de précipitation à la source (valeur `NULL` en base, jamais estimée — voir
-`data/limitations.md`). La page Précipitations inclut une note textuelle visible pour éviter
-qu'un lecteur interprète leur absence du graphique comme « 0 mm de pluie ».
+## Bascule vers Azure (plus tard, une seule fois)
 
-## Pourquoi ce n'est pas encore publié/intégré au site (normal, pas un oubli)
-
-Le DAT prévoit une intégration du rapport Power BI dans le frontend via iframe (Power BI
-Service, en ligne). Ça nécessite soit une passerelle de données (Gateway) pour interroger une
-base locale depuis Power BI Service — lourd à maintenir en continu — soit une base déjà sur
-Azure SQL. Décision assumée : attendre la migration Azure (prévue une seule fois, une fois tout
-validé en local) avant de publier et d'intégrer, plutôt que de mettre en place une passerelle
-temporaire qui sera de toute façon jetée après la migration.
-
-Séquence prévue : Power BI Desktop (fait) → migration Azure SQL → reconnexion Power BI vers
-Azure → publication Power BI Service → intégration iframe dans le frontend.
-
-## Pour répondre aux questions du professeur
-
-- « Pourquoi DirectQuery et pas Import ? » → Exigence explicite de l'énoncé (affichage en
-  direct) + bonus. Import aurait figé les données au moment du chargement.
-- « Pourquoi des vues plutôt que les tables brutes ? » → Compatibilité DirectQuery (voir
-  section ci-dessus), logique de préparation centralisée dans SQL Server plutôt que dupliquée
-  dans l'outil de visualisation.
-- « Pourquoi le Manitoba n'a pas de barre sur le graphique Précipitations ? » → Donnée
-  manquante à la source, documentée, jamais estimée — voir la note sur la page et
-  `data/limitations.md`.
+Seul `.env` change — pas le code :
+- `DB_SERVER` → nom `*.database.windows.net`
+- `DB_ENCRYPT=true` (obligatoire sur Azure)
+- `DB_TRUST_SERVER_CERTIFICATE=false`
+- `DB_USER` / `DB_PASSWORD` → identifiants du login créé sur le serveur Azure SQL
