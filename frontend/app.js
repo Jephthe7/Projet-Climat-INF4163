@@ -6,7 +6,7 @@
 // Pendant les tests avec Aka (tunnel ngrok) : remplacer par l'URL ngrok actuelle,
 // ex. "https://abc123.ngrok-free.app" (change à chaque redémarrage du tunnel).
 // Une fois l'API déployée en ligne (Azure), remplacer par son URL publique définitive.
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://projet-climat-inf4163.onrender.com";
 
 /* ================= SYSTEME D'ONGLETS ================= */
 
