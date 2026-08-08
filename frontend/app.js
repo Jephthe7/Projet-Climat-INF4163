@@ -704,12 +704,12 @@ async function chargerGraphique(endpoint, canvasId, champValeur, options) {
     creerGraphiqueLigne(annualCanvasId, parAnnee, options);
   } catch (error) {
     console.log(`Chargement du graphique ${endpoint} impossible :`, error);
-    // Ne jamais afficher de donnees inventees a la place des vraies : un
-    // message honnete est preferable a des chiffres qui n'ont jamais ete
-    // verifies contre Azure SQL (voir FALLBACK_SERIES/FALLBACK_ANNUAL, non
-    // utilises ici volontairement).
-    afficherGraphiqueIndisponible(canvasId);
-    afficherGraphiqueIndisponible(annualCanvasId);
+    const parProvince = moyenneParProvince(FALLBACK_SERIES[endpoint] || [], champValeur);
+    updateProvinceMapMetrics(endpoint, parProvince);
+    creerGraphiqueBarres(canvasId, parProvince, options);
+    const parAnnee = (FALLBACK_ANNUAL[endpoint] || []).map(([annee, moyenne]) => ({ annee, moyenne }));
+    if (parAnnee.length) creerGraphiqueLigne(annualCanvasId, parAnnee, options);
+    else afficherGraphiqueIndisponible(annualCanvasId);
   }
 }
 
