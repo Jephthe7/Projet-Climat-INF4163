@@ -16,7 +16,7 @@
 
   <div class="brand">
     <img src="assets/Protlogo2.png" alt="Logo GREEN SOFT" class="brand-logo">
-    <span>GREEN SOFT</span>
+    <span class="brand-copy"><strong>GREEN SOFT</strong><small>Baromètre Climat Canada</small></span>
   </div>
 
   <div class="nav-actions">
@@ -30,10 +30,6 @@
       <li><a href="#test-temps-reel" data-tab="test-temps-reel"> Test </a></li>
     </ul>
 
-    <button class="theme-toggle" id="themeToggle" title="Basculer le mode sombre">
-      <i class="fa-solid fa-moon"></i>
-    </button>
-
     <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
   </div>
 
@@ -44,40 +40,72 @@
 <div id="accueil" class="tab-panel active">
 
   <section class="hero">
-    <div class="hero-ticker" aria-hidden="true">
-      <div class="hero-ticker-track">
-        <span>🌡 Température +2.1°C</span>
-        <span>☁ CO₂ GES</span>
-        <span>🌧 Précipitations 2023–2025</span>
-        <span>🌡 Température +2.1°C</span>
-        <span>☁ CO₂ GES</span>
-        <span>🌧 Précipitations 2023–2025</span>
-      </div>
-    </div>
-    <div class="hero-overlay">
-      <h1> Canada's Climate <br><span></span> Barometer </h1>
-      <p>Visualisez l'évolution du climat canadien grâce aux données Azure SQL et aux tableaux de bord Power BI interactifs.</p>
-      <div class="hero-buttons">
-        <a href="#temperature" data-tab="temperature" class="btn">Explorer les données <i class="fa-solid fa-arrow-right"></i></a>
-      </div>
+    <div class="hero-bg" aria-hidden="true">
+      <svg class="hero-noise" width="0" height="0">
+        <filter id="heroGrain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"></feColorMatrix>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#heroGrain)"></rect>
+      </svg>
+      <svg class="hero-skyline" viewBox="0 0 800 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,300 L0,210 L60,150 L100,190 L150,120 L210,190 L260,160 L320,300 Z" class="skyline-back"></path>
+        <path d="M0,300 L0,250 L90,180 L160,230 L230,170 L300,240 L360,300 Z" class="skyline-front"></path>
+      </svg>
     </div>
 
-    <div class="hero-orbits" aria-hidden="true">
-      <span class="orbit-ring ring-1"></span>
-      <span class="orbit-ring ring-2"></span>
-      <span class="orbit-ring ring-3"></span>
-      <span class="orbit-star s1"></span>
-      <span class="orbit-star s2"></span>
-      <span class="orbit-star s3"></span>
-      <span class="orbit-star s4"></span>
-      <span class="orbit-star s5"></span>
-    </div>
+    <div class="hero-inner">
+      <div class="hero-overlay">
+        <span class="hero-eyebrow">Données climatiques du Canada</span>
+        <h1>Le climat canadien<br><span>en données</span></h1>
+        <p>Découvrez l'évolution des températures, des émissions de gaz à effet de serre et des précipitations à travers les provinces et territoires canadiens, à partir de données publiques.</p>
+        <div class="hero-buttons">
+          <a href="#temperature" data-tab="temperature" class="btn">Explorer les indicateurs <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
 
     <div class="hero-visual">
+      <div class="hero-indicators" aria-label="Indicateurs clés 2023-2025">
+        <span class="hero-indicators-title">Indicateurs clés (2023-2025)</span>
+        <div class="indicator-row">
+          <div class="indicator-card" id="indicator-temp">
+            <i class="fa-solid fa-temperature-high"></i>
+            <div>
+              <span class="indicator-label">Province la plus chaude</span>
+              <strong class="indicator-value">—</strong>
+            </div>
+          </div>
+          <div class="indicator-card" id="indicator-pollution">
+            <i class="fa-solid fa-smog"></i>
+            <div>
+              <span class="indicator-label">Province la plus polluée</span>
+              <strong class="indicator-value">—</strong>
+            </div>
+          </div>
+          <div class="indicator-card" id="indicator-precip">
+            <i class="fa-solid fa-cloud-rain"></i>
+            <div>
+              <span class="indicator-label">Province la plus pluvieuse</span>
+              <strong class="indicator-value">—</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="hero-map">
         <svg viewBox="0 0 1386 822" class="hero-map-svg">
+          <defs>
+            <linearGradient id="gradWarm" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FDBA74"/>
+              <stop offset="100%" stop-color="#F97316"/>
+            </linearGradient>
+            <linearGradient id="gradCool" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7DD3FC"/>
+              <stop offset="100%" stop-color="#0284C7"/>
+            </linearGradient>
+          </defs>
 
-          <g class="hero-map-province highlighted" id="p-yukon">
+          <g class="hero-map-province" id="p-yukon">
             <path d="M276.8,345.7c-33.5-14.4-71.1-20.8-105.3-34.3c-23.8-9.4-47.8-18.8-71.1-29.3c-7.5-3.3-14-4.6-9.2-13.6
               c7.7-14.4,0.4-6-10.3-9.9c-17.6-6.4-3.1-23.3,2.8-36.7c10.5-23.6,21-47.3,31.5-71c19-42.9,38-85.8,57-128.7
               c8.1-18.3,20.1,9.3,24.5,17.1c3.2,5.6,12.7,11.5,10.3,17c-3.5,7.7-6.8,15.8-9.2,23.9c-2.3,7.9-5.7,19.1-5.8,27.2
@@ -86,7 +114,7 @@
               C276.9,329.2,281.4,347.6,276.8,345.7z" />
           </g>
 
-          <g class="hero-map-province highlighted" id="p-cb">
+          <g class="hero-map-province" id="p-cb">
             <path d="M217,656.1c-10.6-4.4-13.4-13.4-20.5-20.3c-6.5-6.4-11.8-12.3-17.7-20.2c-6-8-14.1-16.4-17.8-25.7
               c-1.7-4.2-8.5-24.1,4.3-16.8c15.8,8.9,36.6,24.1,42,42.3C208.6,619.9,247.7,668.7,217,656.1z" />
             <path d="M379.6,665.3c-22.1-2.4-43.9-5.6-65.8-9.6c-15-2.7-30-5.5-44.9-8.3c-6.9-1.3-33.5-2.5-36.4-8.8
@@ -101,7 +129,7 @@
               C123.4,523.6,121.8,522.1,120.8,519.8z" />
           </g>
 
-          <g class="hero-map-province highlighted" id="p-alberta">
+          <g class="hero-map-province" id="p-alberta">
             <path d="M435.3,670.2c-13.1-1.1-44.7,3.1-53.5-9.8c-6.3-8.1-2.5-17.6-3.8-27.3c-1.8-13.2-18-29.8-25.5-40.5
               c-6.7-9.5-16.4-18.5-21.8-28.8c-4.8-9.1-20.5-25.4-20.6-33.4c-0.1-8.2,0.2-15.6,1.4-23.9c3.9-25.8,8.5-51.5,12.9-77.2
               c3.5-20.3,7-40.5,10.5-60.8c2.1-12.1,10.5-6.2,21.5-4.6c36.5,5.3,73.3,8.3,109.8,13c9.7,1.3-5.2,20.4-6.9,22.6
@@ -132,7 +160,7 @@
               c4.7,2.3,6.7,7.2,11.1,9.9C627.4,553.3,629.4,543.8,638.3,542.3z" />
           </g>
 
-          <g class="hero-map-province highlighted" id="p-ontario">
+          <g class="hero-map-province" id="p-ontario">
             <path d="M956.5,801.8c0.5-1.5,18.6-12,8.9-15.8c-5.3-2.1,5.4-20.4,5.7-22.4c2-11.2-5.1-20.3-1.1-32.1
               c1.5-4.2-4.3-18.7-7.7-18.1c6.7-1.2,20.5,19.6,28.7,10.9c7.4-7.9-6-16.9-11.1-20.8c-17.9-13.6-41.1-6-61.8-3.7
               c-4.9,0.5-13.6-3.8-17.3-6.5c-2.5-1.7-2.8-5.6-5.5-7.5c-6.2-4.5,0.5-1-0.7-5.9c-4.7-19.8-30.2-9.9-36.2-27.5
@@ -147,7 +175,7 @@
               c-9.7,11.8-11.1,17.6-25.8,21.6C955.9,803.8,956.2,802.8,956.5,801.8z" />
           </g>
 
-          <g class="hero-map-province highlighted" id="p-quebec">
+          <g class="hero-map-province" id="p-quebec">
             <path d="M1085.3,673.4c-6.2-7.2-6.3-12.8-17.3-4.6c-5.2,3.9-14.9,12.6-22.6,8.4c-6.8-3.8-11.8-6.9-20.1-8.2
               c-12.3-1.8-27.4,2.3-37-8.3c-12-13.3-15.1-37-20.3-53.8c-6.2-20.2-10.7-41.4-18.6-61c-1.8-4.4,3.1-2.3,4.3-5.1
               c1.1-2.6-1.3-6.5,0.2-10.1c4.3-10-5.2-17.6-10-25.7c-4.2-7-6.2-13.6-9.7-20.7c-2.1-4.3-17.2-14.7-13.6-20.3
@@ -174,7 +202,7 @@
               c1,5.1,4.8,7.4,6.6,12c6,14.5,17.3,3.4,24.7,8.6c0,0-13.4,28.1-15,30.4C1231.1,608.4,1218.8,622.6,1208.9,621.9z" />
           </g>
 
-          <g class="hero-map-province highlighted" id="p-ns">
+          <g class="hero-map-province" id="p-ns">
             <path d="M1248.2,647.8c-16.9-0.6-15.6-20.1-10.6-30.6c2.5-5.3,6.1-10,8.5-15.3c1.7-3.7,14.2-8.2,13.3-12.9
               c-0.3-1.7-15,13.1-15.3,5.5c-0.2-6.4,6.1-21.1,13.3-22.2c0.5-0.1,52.6-20.1,46.3-3.5c-3.1,8.3-11.1,17.4-17.1,23.9
               c-2.9,3.2-10.1,15.6-12.8,16.9c-7.8,3.7-6,6.2-8.1,15.3C1263.8,634.2,1258.4,648.2,1248.2,647.8z" />
@@ -274,49 +302,38 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="kpis">
-    <div class="kpi-card">
+    <div class="kpi-card" id="kpi-temp">
       <div class="icon teal"><i class="fa-solid fa-temperature-high"></i></div>
-      <div><h3>Température</h3><strong>+2.1°C</strong><p>Variation moyenne récente</p></div>
+      <h3>Température moyenne</h3>
+      <div class="kpi-value">—</div>
+      <p>Maximum observé · 2023–2025</p>
     </div>
-    <div class="kpi-card">
+    <div class="kpi-card" id="kpi-pollution">
       <div class="icon orange"><i class="fa-solid fa-smog"></i></div>
-      <div><h3>CO₂</h3><strong>GES</strong><p>Émissions provinciales</p></div>
+      <h3>Émissions de CO₂</h3>
+      <div class="kpi-value">—</div>
+      <p>Maximum provincial · CO₂e</p>
     </div>
-    <div class="kpi-card">
+    <div class="kpi-card" id="kpi-precip">
       <div class="icon blue"><i class="fa-solid fa-cloud-rain"></i></div>
-      <div><h3>Précipitations</h3><strong>2023-2025</strong><p>Analyse climatique</p></div>
+      <h3>Précipitations</h3>
+      <div class="kpi-value">—</div>
+      <p>Province la plus pluvieuse</p>
     </div>
   </section>
 
   <section class="highlights">
     <div class="section-title-inline">
-      <h2>Aperçu des Résultats Clés</h2>
-      <p>Résultats calculés via procédures stockées &amp; déclencheurs SQL</p>
+      <h2>Le mois le plus chaud</h2>
+      <p>Résultat calculé via procédure stockée SQL, toutes provinces confondues (2023-2025)</p>
     </div>
-    <div class="highlights-grid">
+    <div class="highlights-grid highlights-grid-single">
       <div class="highlight-card" id="hl-temp-annee">
         <span class="hl-label">Température</span>
-        <div class="hl-value">—</div>
-        <div class="hl-metric">—</div>
-        <p class="hl-caption">Chargement…</p>
-      </div>
-      <div class="highlight-card" id="hl-temp-province">
-        <span class="hl-label">Température</span>
-        <div class="hl-value">—</div>
-        <div class="hl-metric">—</div>
-        <p class="hl-caption">Chargement…</p>
-      </div>
-      <div class="highlight-card" id="hl-pollution-province">
-        <span class="hl-label">Pollution</span>
-        <div class="hl-value">—</div>
-        <div class="hl-metric">—</div>
-        <p class="hl-caption">Chargement…</p>
-      </div>
-      <div class="highlight-card" id="hl-pluie-province">
-        <span class="hl-label">Précipitations</span>
         <div class="hl-value">—</div>
         <div class="hl-metric">—</div>
         <p class="hl-caption">Chargement…</p>
@@ -331,19 +348,19 @@
         <i class="fa-solid fa-temperature-half"></i>
         <h3>Température</h3>
         <p>Analyse des températures moyennes par province et territoire.</p>
-        <a href="#temperature" data-tab="temperature">Voir le dashboard →</a>
+        <a href="#temperature" data-tab="temperature">Explorer les données →</a>
       </div>
       <div class="data-card pollution-card">
         <i class="fa-solid fa-industry"></i>
         <h3>Pollution</h3>
         <p>Suivi des émissions de gaz à effet de serre.</p>
-        <a href="#pollution" data-tab="pollution">Voir le dashboard →</a>
+        <a href="#pollution" data-tab="pollution">Explorer les données →</a>
       </div>
       <div class="data-card rain-card">
         <i class="fa-solid fa-cloud-showers-heavy"></i>
         <h3>Précipitations</h3>
         <p>Analyse des variations des précipitations.</p>
-        <a href="#precipitations" data-tab="precipitations">Voir le dashboard →</a>
+        <a href="#precipitations" data-tab="precipitations">Explorer les données →</a>
       </div>
     </div>
   </section>
@@ -352,15 +369,28 @@
 
 <!-- ================= TEMPÉRATURE ================= -->
 <section class="dashboard-section tab-panel" id="temperature">
-  <div class="section-title">
-    <h2>🌡 Température</h2>
-    <p>Température moyenne par province</p>
+  <div class="section-title climate-page-heading temperature-heading">
+    <span class="section-eyebrow">Portrait climatique · 2023–2025</span>
+    <h2><i class="fa-solid fa-temperature-half" aria-hidden="true"></i> Température</h2>
+    <p>Comparez les provinces et suivez l’évolution de la moyenne nationale.</p>
   </div>
 
-  <div class="dashboard-box">
-    <div class="chart-container">
-      <canvas id="chart-temperature"></canvas>
-    </div>
+  <div class="analysis-visual-grid">
+    <article class="dashboard-box chart-card chart-card-main">
+      <div class="chart-card-heading">
+        <div><span>Comparaison territoriale</span><h3>Moyenne par province</h3></div>
+        <span class="chart-badge">°C</span>
+      </div>
+      <div class="chart-container chart-container-bars"><canvas id="chart-temperature"></canvas></div>
+    </article>
+    <article class="dashboard-box chart-card chart-card-trend">
+      <div class="chart-card-heading">
+        <div><span>Tendance nationale</span><h3>Évolution annuelle</h3></div>
+        <span class="chart-badge">2023–2025</span>
+      </div>
+      <p class="chart-subtitle">Moyenne de toutes les provinces disponibles</p>
+      <div class="chart-container chart-container-line"><canvas id="chart-temperature-annee"></canvas></div>
+    </article>
   </div>
 
   <div class="mini-results">
@@ -376,15 +406,28 @@
 
 <!-- ================= POLLUTION ================= -->
 <section class="dashboard-section tab-panel" id="pollution">
-  <div class="section-title">
-    <h2>☁ Pollution</h2>
-    <p>Émissions CO₂ et GES</p>
+  <div class="section-title climate-page-heading pollution-heading">
+    <span class="section-eyebrow">Portrait climatique · 2022–2024</span>
+    <h2><i class="fa-solid fa-smog" aria-hidden="true"></i> Pollution</h2>
+    <p>Mesurez les écarts provinciaux et la trajectoire nationale des émissions.</p>
   </div>
 
-  <div class="dashboard-box">
-    <div class="chart-container">
-      <canvas id="chart-pollution"></canvas>
-    </div>
+  <div class="analysis-visual-grid">
+    <article class="dashboard-box chart-card chart-card-main">
+      <div class="chart-card-heading">
+        <div><span>Comparaison territoriale</span><h3>Moyenne par province</h3></div>
+        <span class="chart-badge">Mt CO₂e</span>
+      </div>
+      <div class="chart-container chart-container-bars"><canvas id="chart-pollution"></canvas></div>
+    </article>
+    <article class="dashboard-box chart-card chart-card-trend">
+      <div class="chart-card-heading">
+        <div><span>Tendance nationale</span><h3>Évolution annuelle</h3></div>
+        <span class="chart-badge">2022–2024</span>
+      </div>
+      <p class="chart-subtitle">Moyenne de toutes les provinces disponibles</p>
+      <div class="chart-container chart-container-line"><canvas id="chart-pollution-annee"></canvas></div>
+    </article>
   </div>
 
   <div class="mini-results">
@@ -400,16 +443,37 @@
 
 <!-- ================= PRÉCIPITATIONS ================= -->
 <section class="dashboard-section tab-panel" id="precipitations">
-  <div class="section-title">
-    <h2>🌧 Précipitations</h2>
-    <p>Données hydrologiques canadiennes</p>
+  <div class="section-title climate-page-heading precipitation-heading">
+    <span class="section-eyebrow">Portrait climatique · 2023–2025</span>
+    <h2><i class="fa-solid fa-cloud-showers-heavy" aria-hidden="true"></i> Précipitations</h2>
+    <p>Observez la répartition des précipitations et leur évolution au Canada.</p>
   </div>
 
-  <div class="dashboard-box">
-    <div class="chart-container">
-      <canvas id="chart-precipitations"></canvas>
-    </div>
+  <div class="analysis-visual-grid">
+    <article class="dashboard-box chart-card chart-card-main">
+      <div class="chart-card-heading">
+        <div><span>Comparaison territoriale</span><h3>Moyenne par province</h3></div>
+        <span class="chart-badge">mm</span>
+      </div>
+      <div class="chart-container chart-container-bars"><canvas id="chart-precipitations"></canvas></div>
+    </article>
+    <article class="dashboard-box chart-card chart-card-trend">
+      <div class="chart-card-heading">
+        <div><span>Tendance nationale</span><h3>Évolution annuelle</h3></div>
+        <span class="chart-badge">2023–2025</span>
+      </div>
+      <p class="chart-subtitle">Moyenne de toutes les provinces disponibles</p>
+      <div class="chart-container chart-container-line"><canvas id="chart-precipitations-annee"></canvas></div>
+    </article>
   </div>
+
+  <aside class="data-quality-note" aria-label="Limite de couverture des données de précipitations">
+    <span class="data-quality-icon"><i class="fa-solid fa-circle-info" aria-hidden="true"></i></span>
+    <div>
+      <strong>Couverture des données</strong>
+      <p>Manitoba, Nouvelle-Écosse, Nunavut, Saskatchewan et Yukon ne disposent d’aucune mesure de précipitations dans la source actuelle. Leurs valeurs <code>NULL</code> sont exclues des moyennes et ne sont jamais interprétées comme zéro.</p>
+    </div>
+  </aside>
 
   <div class="mini-results">
     <h3>Résultats analytiques — Précipitations</h3>
@@ -424,17 +488,35 @@
 
 <!-- ================= ANALYSES (les 11 résultats, vue complète) ================= -->
 <section class="dashboard-section tab-panel" id="analyse">
-  <div class="section-title">
-    <h2>📊 Résultats analytiques</h2>
-    <p>Les 11 procédures stockées, toutes bases confondues</p>
+  <div class="analysis-page-hero">
+    <div>
+      <span class="section-eyebrow">Synthèse des trois bases</span>
+      <h2>Résultats analytiques</h2>
+      <p>Une lecture structurée des 11 procédures stockées du projet climatique.</p>
+    </div>
+    <div class="analysis-sync">
+      <span id="analysis-sync-status"><i></i> Synchronisation en cours</span>
+      <button id="refresh-data-btn" type="button"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+    </div>
   </div>
 
-  <div class="table-container">
-    <table>
-      <thead><tr><th>Question</th><th>Base</th><th>Résultat</th></tr></thead>
-      <tbody id="resultats-body"><tr><td colspan="3">Chargement…</td></tr></tbody>
-    </table>
+  <div class="analysis-overview">
+    <article><strong>11</strong><span>questions analytiques</span></article>
+    <article><strong>3</strong><span>bases Azure SQL</span></article>
+    <article><strong>3 ans</strong><span>par série climatique</span></article>
   </div>
+
+  <div class="analysis-filter" aria-label="Filtrer les résultats">
+    <button class="active" type="button" data-analysis-filter="all">Tous</button>
+    <button type="button" data-analysis-filter="temperature">Température</button>
+    <button type="button" data-analysis-filter="pollution">Pollution</button>
+    <button type="button" data-analysis-filter="precipitations">Précipitations</button>
+  </div>
+
+  <div class="analysis-result-grid" id="analysis-result-grid" aria-live="polite">
+    <p class="analysis-loading">Chargement des résultats…</p>
+  </div>
+  <table class="analysis-data-source" hidden><tbody id="resultats-body"></tbody></table>
 </section>
 
 <!-- ================= ÉQUIPE ================= -->
@@ -442,23 +524,38 @@
   <div class="section-title"><h2>👥 Notre équipe</h2></div>
 
   <div class="team-grid">
-    <div class="member-card">
-      <img src="assets/photo1.jpg" alt="Photo de Fedjo Tejioleng">
-      <h3>Wilfried Fedjo</h3>
-      <span>Chef de groupe</span>
-      <p>Gestion projet, Power BI, documentation.</p>
-    </div>
-    <div class="member-card">
-      <img src="assets/photo2.jpg" alt="Photo de Melchisedek Aka">
-      <h3>Melchisedek Aka</h3>
-      <span>Frontend</span>
-      <p>Développement interface, design et déploiement.</p>
-    </div>
-    <div class="member-card">
-      <img src="assets/photo3.jpg" alt="Photo de Martine Grâce">
-      <h3>Debora Lohoues</h3>
-      <span>Base de données</span>
-      <p>Azure SQL, procédures stockées.</p>
+    <button class="member-card" type="button" data-profile="wilfried" aria-label="Ouvrir le profil de Wilfried Fedjo">
+      <div class="member-photo"><img src="assets/photo1.jpg" alt="Portrait de Wilfried Fedjo"></div>
+      <div class="member-copy">
+        <span>Coordination · Power BI</span>
+        <h3>Wilfried Fedjo</h3>
+      </div>
+    </button>
+    <button class="member-card" type="button" data-profile="debora" aria-label="Ouvrir le profil de Debora Lohoues">
+      <div class="member-photo"><img src="assets/photo3-blurred.png" alt="Portrait de Debora Lohoues"></div>
+      <div class="member-copy">
+        <span>Bases de données · SQL</span>
+        <h3>Debora Lohoues</h3>
+      </div>
+    </button>
+    <button class="member-card" type="button" data-profile="melchisedek" aria-label="Ouvrir le profil de Melchisedek Aka">
+      <div class="member-photo"><img src="assets/photo2.jpg" alt="Portrait de Melchisedek Aka"></div>
+      <div class="member-copy">
+        <span>Frontend</span>
+        <h3>Melchisedek Aka</h3>
+      </div>
+    </button>
+  </div>
+
+  <div class="team-profile" id="teamProfile" aria-hidden="true">
+    <div class="team-profile-photo"><img src="" alt=""></div>
+    <div class="team-profile-content">
+      <button class="team-profile-back" type="button"><i class="fa-solid fa-arrow-left"></i><span>Retour à l’équipe</span></button>
+      <span class="team-profile-role"></span>
+      <h3 class="team-profile-name"></h3>
+      <blockquote class="team-profile-quote"></blockquote>
+      <p class="team-profile-signature"></p>
+      <div class="team-profile-skills" aria-label="Notions du cours mobilisées"></div>
     </div>
   </div>
 </section>
@@ -504,8 +601,97 @@
   </div>
 </section>
 
+<section class="dashboard-section tab-panel" id="a-propos">
+  <div class="about-content">
+    <div class="about-hero">
+      <div class="about-hero-copy">
+        <span class="about-kicker">GREEN SOFT · Projet INF4163-01</span>
+        <h2>Transformer les données climatiques en une lecture claire du Canada.</h2>
+        <p>Baromètre Climat Canada relie bases de données, API et visualisation pour rendre accessibles trois réalités mesurables : la température, les émissions de gaz à effet de serre et les précipitations.</p>
+        <div class="about-actions">
+          <a href="#temperature" data-tab="temperature" class="about-primary">Explorer les données <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#equipe" data-tab="equipe" class="about-secondary">Découvrir l’équipe</a>
+        </div>
+      </div>
+      <div class="about-mark" aria-hidden="true">
+        <img src="assets/Protlogo2.png" alt="">
+        <span>DONNÉES</span><span>CANADA</span><span>CLIMAT</span>
+      </div>
+    </div>
+
+    <div class="about-stats" aria-label="Chiffres clés du projet">
+      <div><strong>3</strong><span>bases Azure SQL</span></div>
+      <div><strong>9</strong><span>tables de données</span></div>
+      <div><strong>11</strong><span>procédures stockées</span></div>
+      <div><strong>12</strong><span>déclencheurs</span></div>
+    </div>
+
+    <div class="about-story-grid">
+      <article class="about-story">
+        <span class="about-card-index">01</span>
+        <h3>Une intention concrète</h3>
+        <p>Faire apparaître la profondeur du travail de données sans imposer sa complexité au visiteur. Chaque graphique relie une question climatique à un résultat compréhensible.</p>
+      </article>
+      <article class="about-story">
+        <span class="about-card-index">02</span>
+        <h3>Des sources publiques</h3>
+        <p>Les températures, précipitations et émissions proviennent d’Environnement et Changement climatique Canada, dont le Rapport d’inventaire national.</p>
+      </article>
+    </div>
+
+    <div class="about-pipeline">
+      <div class="about-pipeline-heading">
+        <span>Notre chaîne de données</span>
+        <h3>Du fichier source à la décision visuelle.</h3>
+      </div>
+      <div class="pipeline-flow">
+        <div><i class="fa-brands fa-python"></i><span>Préparer</span><small>Python</small></div>
+        <i class="fa-solid fa-arrow-right pipeline-arrow"></i>
+        <div><i class="fa-solid fa-database"></i><span>Structurer</span><small>Azure SQL</small></div>
+        <i class="fa-solid fa-arrow-right pipeline-arrow"></i>
+        <div><i class="fa-solid fa-code"></i><span>Exposer</span><small>Node.js · API</small></div>
+        <i class="fa-solid fa-arrow-right pipeline-arrow"></i>
+        <div><i class="fa-solid fa-chart-column"></i><span>Comprendre</span><small>Site · Power BI</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <p>© 2026 GREEN SOFT — Baromètre Climat Canada</p>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="assets/Protlogo2.png" alt="Logo GREEN SOFT">
+        <span><strong>GREEN SOFT</strong><small>Baromètre Climat Canada</small></span>
+      </div>
+      <p>Une plateforme universitaire de visualisation conçue pour rendre les tendances climatiques canadiennes plus accessibles et compréhensibles.</p>
+      <span class="footer-signature">Données · Analyse · Visualisation</span>
+    </div>
+    <div class="footer-col">
+      <h4>Explorer</h4>
+      <a href="#accueil" data-tab="accueil">Accueil</a>
+      <a href="#temperature" data-tab="temperature">Température</a>
+      <a href="#pollution" data-tab="pollution">Pollution</a>
+      <a href="#precipitations" data-tab="precipitations">Précipitations</a>
+      <a href="#analyse" data-tab="analyse">Analyses</a>
+    </div>
+    <div class="footer-col">
+      <h4>Le projet</h4>
+      <a href="#equipe" data-tab="equipe">Équipe</a>
+      <a href="#a-propos" data-tab="a-propos">À propos</a>
+      <a href="#test-temps-reel" data-tab="test-temps-reel">Test en temps réel</a>
+    </div>
+    <div class="footer-context">
+      <h4>Contexte</h4>
+      <span><i class="fa-solid fa-graduation-cap"></i> Projet INF4163-01</span>
+      <span><i class="fa-regular fa-calendar"></i> Données 2022–2025 selon la base</span>
+      <span><i class="fa-solid fa-database"></i> Azure SQL · API Node.js</span>
+    </div>
+  </div>
+  <div class="footer-copy">
+    <span>© <span id="footerYear">2026</span> GREEN SOFT</span>
+    <span>Baromètre Climat Canada</span>
+  </div>
 </footer>
 
 <script src="app.js"></script>
