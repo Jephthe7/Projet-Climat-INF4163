@@ -79,3 +79,90 @@ def space_thousands_to_float(series):
         series.astype(str).str.replace('\xa0', '', regex=False).str.replace(' ', '', regex=False),
         errors='coerce'
     )
+
+
+# =====================================================================
+# Connexion SQL Server — utilise par les scripts import_*.py
+# =====================================================================
+#
+# IMPORTANT : ceci cible l'instance LOCALE (SQL Server Express via SSMS),
+# pas Azure. Sur Azure, la chaine de connexion change (authentification
+# SQL, pas Windows ; port 1433 ; nom de serveur *.database.windows.net).
+# Ne pas reutiliser cette fonction telle quelle pour Azure — Bloc 3,
+# plus tard.
+#
+# Ajuste SERVER_LOCAL si ton instance SQL Server Express a un nom
+# different (visible dans SSMS, Explorateur d'objets, tout en haut).
+
+SERVER_LOCAL = r"LAPTOP-G7JDT0PL\SQLEXPRESS"
+
+
+def get_connection(database):
+    """
+    Ouvre une connexion pyodbc vers une base locale, en authentification
+    Windows (Trusted_Connection) — la meme methode que celle utilisee
+    par SSMS quand tu t'y connectais sans mot de passe.
+
+    Necessite : pip install pyodbc --break-system-packages
+    Necessite aussi le pilote ODBC "ODBC Driver 17 for SQL Server"
+    (ou 18) installe sur la machine — generalement deja present si
+    SSMS est installe.
+    """
+    import pyodbc
+    conn_str = (
+        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+        f"SERVER={SERVER_LOCAL};"
+        f"DATABASE={database};"
+        f"Trusted_Connection=yes;"
+    )
+    return pyodbc.connect(conn_str)
+
+
+# ============================================================
+# Connexion Azure SQL (migration cloud — voir docs/DAT section Azure)
+# ============================================================
+
+import os
+
+SERVER_AZURE = "climat-inf4163-sql.database.windows.net"
+
+
+def get_connection_azure(database):
+    """
+    Ouvre une connexion pyodbc vers Azure SQL Database, en authentification
+    SQL (login/mot de passe), seule methode supportee par Azure SQL —
+    contrairement a get_connection() ci-dessus qui utilise l'authentification
+    Windows pour le serveur local.
+
+    Le login et le mot de passe sont lus depuis les variables d'environnement
+    AZURE_SQL_USER et AZURE_SQL_PASSWORD, jamais codes en dur ici, pour ne
+    jamais risquer de les committer dans Git (meme logique que api/.env).
+
+    A definir avant l'execution, dans le meme terminal PowerShell :
+        $env:AZURE_SQL_USER="adminclimat"
+        $env:AZURE_SQL_PASSWORD="ton_mot_de_passe"
+
+    Necessite : pip install pyodbc --break-system-packages
+    Pilote recommande pour Azure : "ODBC Driver 18 for SQL Server"
+    (telechargeable depuis le site Microsoft si pas deja installe).
+    """
+    import pyodbc
+
+    try:
+        user = os.environ["AZURE_SQL_USER"]
+        password = os.environ["AZURE_SQL_PASSWORD"]
+    except KeyError as e:
+        raise RuntimeError(
+            f"Variable d'environnement manquante : {e}. "
+            f"Definis AZURE_SQL_USER et AZURE_SQL_PASSWORD dans ce terminal "
+            f"avant de relancer le script (voir docstring de get_connection_azure)."
+        ) from e
+
+    conn_str = (
+        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+        f"SERVER={SERVER_AZURE};"
+        f"DATABASE={database};"
+        f"UID={user};PWD={password};"
+        f"Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+    return pyodbc.connect(conn_str)

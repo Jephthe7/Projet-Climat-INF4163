@@ -9,7 +9,7 @@ Trace les décisions et incidents survenus pendant la collecte, dans le même es
 | Base | Source | Fichiers attendus |
 |---|---|---|
 | TempératureDB / PrécipitationsDB | Environnement Canada (voir `environnement_canada.md`) | 39 CSV (13 stations × 3 années) |
-| PollutionDB | Statistique Canada (voir `statistique_canada.md`) | 1 CSV (toutes provinces/années) |
+| PollutionDB | ECCC — Rapport d'inventaire national (voir `eccc_inventaire_ges.md`) | 1 CSV (toutes provinces/années) |
 
 ## Écarts par rapport au plan initial
 

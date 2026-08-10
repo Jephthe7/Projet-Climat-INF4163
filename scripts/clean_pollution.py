@@ -1,76 +1,90 @@
 """
 clean_pollution.py — Calcule les emissions totales de GES (Mt CO2e) par province.
 
-Entree  : data/raw/pollution_statcan_raw.csv (export brut StatCan, tableau 38-10-0097-01)
+Entree  : data/raw/pollution_eccc_raw.csv (export brut ECCC, Rapport
+          d'inventaire national — GES Econ Can Prov Terr.csv,
+          catalogue data-donnees.ec.gc.ca, dossier B-Secteurs-Economiques)
 Sortie  : data/clean/pollution_clean.csv
 
+Remplace l'ancienne version basee sur StatCan (tableau 38-10-0097-01,
+periode 2021-2023) — le professeur a demande une autre source le 02/08
+(voir PGOP Annexe B) car cette periode ne correspondait pas a l'exigence.
+Confirmation ecrite du prof (capture Teams, 02/08, 19h26) pour la
+nouvelle periode 2022-2024 avec cette source ECCC.
+
 Traitement :
-1. Lecture du fichier brut (format StatCan : en-tete metadonnees sur 8 lignes,
-   separateur ';', valeurs en kilotonnes avec espace comme separateur de milliers)
-2. La ligne "Geographie" n'est renseignee que sur la premiere sous-ligne
-   (Total, industries) ; propagation vers la sous-ligne suivante (Total, menages)
+1. Lecture du fichier brut (encodage Windows-1252, structure hierarchique :
+   chaque province/annee a plusieurs lignes de detail par secteur/sous-secteur,
+   plus UNE ligne totale identifiee par Index == 0)
+2. Filtrage sur Index == 0 (ligne totale, quel que soit son libelle exact —
+   "Total", "Total provincial de l'inventaire" ou "Total territorial de
+   l'inventaire" selon le type de region, verifie non uniforme dans la source)
 3. Exclusion de la ligne "Canada" (total national, hors perimetre du projet)
-4. Somme Industries + Menages par province et par annee = emission totale
-5. Conversion kilotonnes -> megatonnes (/1000)
-6. Restriction aux 3 dernieres annees disponibles dans le fichier (2021-2023
-   au moment de la collecte — voir data/sources/statistique_canada.md pour la
-   justification de cet ecart avec les 2 autres bases, qui utilisent 2023-2025)
+4. Restriction aux 3 annees demandees : 2022, 2023, 2024 (la plus recente
+   disponible a la source — 2025 n'existe nulle part au moment de la
+   collecte, delai de publication ECCC ~16 mois, prochain rapport ~avril 2027)
+5. Conversion kilotonnes -> megatonnes (/1000), coherent avec l'ancienne
+   version (Mt CO2e, pas Mt CO2 pur — voir data/sources/eccc_inventaire_ges.md)
 
 Execution : python clean_pollution.py
 """
 
 import pandas as pd
 import os
-from common import NOM_VERS_CODE, space_thousands_to_float
+from common import NOM_VERS_CODE
 
 RAW_DIR = os.path.join('data', 'raw')
 CLEAN_DIR = os.path.join('data', 'clean')
-RAW_FILE = os.path.join(RAW_DIR, 'pollution_statcan_raw.csv')
-N_ANNEES_RETENUES = 3  # les N dernieres annees disponibles dans le fichier source
+RAW_FILE = os.path.join(RAW_DIR, 'pollution_eccc_raw.csv')
+ANNEES_RETENUES = [2022, 2023, 2024]
 
 
 def clean_pollution(raw_file=RAW_FILE, clean_dir=CLEAN_DIR):
-    # Ligne 9 (index 8) = en-tete reel : "Geographie";"Secteur";"2019";...;"2023"
-    df = pd.read_csv(raw_file, sep=';', skiprows=8, encoding='utf-8-sig')
-    df.columns = [c.strip('"') for c in df.columns]
+    df = pd.read_csv(raw_file, encoding='windows-1252')
 
-    # La colonne Geographie n'est remplie que sur la 1ere sous-ligne (industries)
-    df['Géographie'] = df['Géographie'].ffill()
+    # Ligne totale = Index 0, quel que soit le libelle exact de Source
+    totaux = df[(df['Index'] == 0) & (df['Année'].isin(ANNEES_RETENUES))].copy()
 
-    # Retire la ligne d'entete d'unite ("Canada" / "Kilotonnes") et le total Canada
-    df = df[df['Géographie'] != 'Canada'].reset_index(drop=True)
-    df = df[df['Secteur'].isin(['Total, industries', 'Total, ménages'])].reset_index(drop=True)
+    # Exclure le total national (garde uniquement les 13 provinces/territoires)
+    totaux = totaux[totaux['Région'] != 'Canada']
 
-    year_cols = [c for c in df.columns if c.isdigit()]
-    annees_retenues = sorted(year_cols)[-N_ANNEES_RETENUES:]
-
-    for col in annees_retenues:
-        df[col] = space_thousands_to_float(df[col])
+    # La colonne totale est chargee en texte par pandas (des lignes de detail
+    # sectoriel ailleurs dans le fichier contiennent 'x' = donnee supprimee
+    # pour confidentialite par ECCC — aucune de nos 39 lignes cibles n'est
+    # concernee, verifie, mais la colonne entiere heritait du type texte).
+    totaux['Total (kt CO2eq)'] = pd.to_numeric(totaux['Total (kt CO2eq)'], errors='raise')
 
     rows = []
-    for geo, group in df.groupby('Géographie', sort=False):
-        code = NOM_VERS_CODE.get(geo)
+    provinces_non_reconnues = set()
+    for _, ligne in totaux.iterrows():
+        code = NOM_VERS_CODE.get(ligne['Région'])
         if code is None:
-            continue  # geographie non reconnue (ne devrait pas arriver)
-        for annee in annees_retenues:
-            total_kt = group[annee].sum()
-            rows.append({
-                'CodeProvince': code,
-                'NomProvince': geo,
-                'Annee': int(annee),
-                'Emissions_MtCO2e': round(total_kt / 1000, 3),
-            })
+            provinces_non_reconnues.add(ligne['Région'])
+            continue
+        rows.append({
+            'CodeProvince': code,
+            'NomProvince': ligne['Région'],
+            'Annee': int(ligne['Année']),
+            'Emissions_MtCO2e': round(ligne['Total (kt CO2eq)'] / 1000, 3),
+        })
+
+    if provinces_non_reconnues:
+        raise ValueError(f"Regions non reconnues dans NOM_VERS_CODE : {provinces_non_reconnues}")
 
     result = pd.DataFrame(rows).sort_values(['CodeProvince', 'Annee']).reset_index(drop=True)
+
+    # Verification : 13 provinces x 3 annees = 39 lignes attendues
+    if len(result) != 39:
+        print(f"  /!\\ AVERTISSEMENT : {len(result)} lignes produites (39 attendues)")
 
     os.makedirs(clean_dir, exist_ok=True)
     output_path = os.path.join(clean_dir, 'pollution_clean.csv')
     result.to_csv(output_path, index=False)
 
-    return result, output_path, annees_retenues
+    return result, output_path, ANNEES_RETENUES
 
 
 if __name__ == '__main__':
     result, output_path, annees = clean_pollution()
     print(f"{len(result)} lignes ecrites dans {output_path}")
-    print(f"Annees retenues (3 plus recentes disponibles dans la source) : {annees}")
+    print(f"Annees retenues : {annees}")
