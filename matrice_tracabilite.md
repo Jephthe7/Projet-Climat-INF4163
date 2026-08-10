@@ -1,60 +1,62 @@
 # Matrice de traçabilité des exigences
 
-Relie chaque exigence de l'énoncé (`docs/Consignes/Project_UQO_INF4163.pdf`) à l'endroit exact où elle est satisfaite dans le projet — permet de vérifier rapidement, à tout moment, qu'aucune exigence n'est oubliée.
+Cette matrice relie chaque exigence de l'énoncé à sa réalisation dans le projet remis.
 
 ## Bases de données
 
-| Exigence | Où c'est satisfait | Statut |
+| Exigence | Où elle est satisfaite | Statut |
 |---|---|---|
-| 3 bases Azure SQL (TempératureDB, PollutionDB, PrécipitationsDB) | `docs/DAT/` §8, `sql/temperaturedb\|pollutiondb\|precipitationsdb/` | 🟡 Conçu, SQL à écrire |
-| 9 tables (3 par base) | `docs/DAT/` §8, `docs/PGOP/` Annexe B (24/07) | ✅ Confirmé par le prof |
-| 13 provinces/territoires, 2023-2025 | `data/clean/*.csv` | 🟢 2023-2025 pour Température/Précipitations ; 2022-2024 pour Pollution, confirmé par écrit par le professeur le 02/08 (voir `data/sources/eccc_inventaire_ges.md`) |
-| Données sourcées et documentées | `data/sources/`, `data/limitations.md` | ✅ |
+| 3 bases SQL | `sql/temperaturedb/`, `sql/pollutiondb/`, `sql/precipitationsdb/` et `docs/preuves/azure/` | ✅ Fait — 3 bases hébergées sur Azure SQL |
+| 9 tables annuelles | Scripts `SQL_*_CreateTable_*.sql` | ✅ Fait — 3 tables principales par base |
+| 13 provinces et territoires | `data/clean/` et scripts d'import | ✅ Fait |
+| Périodes couvertes | Température et précipitations : 2023–2025; pollution : 2022–2024, période confirmée par le professeur | ✅ Fait avec écart documenté |
+| Données officielles et reproductibles | `data/sources/`, `data/raw/`, `data/clean/`, `scripts/` | ✅ Fait |
+| Relations entre les tables | CodeProvince partagé par convention; aucune clé étrangère dans la version livrée | ⚠️ Écart documenté; amélioration : table Province et clés étrangères |
 
-## Frontend
+## Frontend et visualisation
 
-| Exigence | Où c'est satisfait | Statut |
+| Exigence | Où elle est satisfaite | Statut |
 |---|---|---|
-| Graphiques des 9 tables par onglets | `docs/BluePrint/` §8, `frontend/` | ⬜ À développer |
-| Connexion live (Power BI/Tableau, pas d'export statique) | `docs/BluePrint/` §9 | ⬜ À développer |
-| Onglet Équipe (photo + contribution) | `docs/BluePrint/` §8 | ⬜ À développer |
-| Logo et nom d'équipe | `assets/logo/` | ⬜ En attente (PGOP Annexe A) |
-| Hébergement gratuit | `docs/DAT/` §15 (Azure Static Web Apps / GitHub Pages) | ⬜ À déployer |
+| Site organisé par onglets | `frontend/index.html`, `frontend/app.js`, `frontend/style.css` | ✅ Fait |
+| Graphiques climatiques | Onglets Température, Pollution et Précipitations; graphiques par province et évolution annuelle | ✅ Fait |
+| Résultats analytiques dans un onglet spécifique | Onglet Analyses et endpoint `/resultats` | ✅ Fait — 11 résultats |
+| Onglet Équipe avec photos et contributions | Onglet Équipe interactif | ✅ Fait |
+| Logo et nom du groupe | `assets/logo/` et frontend | ✅ Fait |
+| Hébergement gratuit | https://greensoft-climat-site.onrender.com | ✅ Fait — Render |
+| Power BI connecté aux données | `powerbi/ProjetClimat.pbix`; Azure SQL en mode Import avec actualisation | ✅ Fait, avec limitation documentée |
 
 ## Backend analytique
 
-| Exigence | Où c'est satisfait | Statut |
+| Exigence | Où elle est satisfaite | Statut |
 |---|---|---|
-| 6 questions analytiques (paires plus/moins) | `docs/BluePrint/` §7.1 (11 procédures nommées) | ⬜ SQL à écrire |
-| Procédures stockées | `sql/*/`, `docs/DAT/` §8 | ⬜ À écrire |
-| Déclencheurs (validation + audit) | `docs/BluePrint/` §7.2 | ⬜ À écrire |
-| Résultats affichés dans le frontend | `docs/BluePrint/` §8 (onglet Résultats analytiques) | ⬜ À développer |
+| Questions analytiques plus/moins | `sql/*/SQL_*_Procedures_v1.sql` | ✅ Fait |
+| Procédures stockées | 11 procédures dans les trois bases | ✅ Fait et testé |
+| Déclencheurs | 12 déclencheurs de validation et d'audit | ✅ Fait et testé |
+| API intermédiaire | `api/` | ✅ Fait et déployé sur Render |
+| Affichage dynamique | `/resultats` et les trois endpoints `/api/*` | ✅ Fait |
 
-## Bonus (+15%)
+## Bonus
 
-| Exigence | Où c'est satisfait | Statut |
+| Bonus | Réalisation | Statut |
 |---|---|---|
-| Hébergement des 3 DB sur Azure (+5%) | `docs/DAT/` §7, §15 | ⬜ |
-| Hébergement gratuit du frontend (+5%) | `docs/DAT/` §15 | ⬜ |
-| Power BI/Tableau dynamique (+5%) | `docs/DAT/` §7, `powerbi/` | ⬜ |
+| Hébergement des 3 bases sur Azure | Azure SQL Database | ✅ Fait |
+| Hébergement gratuit du frontend | Render Static Site | ✅ Fait |
+| Visualisations dynamiques | Chart.js via l'API Azure SQL; rapport Power BI actualisable | ✅ Fait selon la portée documentée |
 
 ## Gouvernance et livrables
 
-| Exigence | Où c'est satisfait | Statut |
+| Livrable | Emplacement | Statut |
 |---|---|---|
-| Organisation d'équipe, rôles, calendrier | `docs/PGOP/` | ✅ |
-| Architecture technique détaillée | `docs/DAT/` | ✅ (à resynchroniser avec la décision mensuel/annuel — voir Annexe B) |
-| Vision produit / parcours utilisateur | `docs/BluePrint/` | ✅ |
-| Gestion GitHub (branches, commits, PR) | `docs/PGOP/` §10, `README.md` | ✅ |
-| Pipeline de données reproductible | `scripts/`, `scripts/README.md` | ✅ |
-| Rapport final | `rapport/` | 🟡 Squelette seulement |
-| Présentation (10 min + démo + 5 min questions) | `presentation/` | ⬜ |
-| Dépôt Moodle avant le 10 août 8h00 | — | ⬜ |
+| PGOP | `docs/PGOP/` | ✅ Fait |
+| DAT | `docs/DAT/` | ✅ Fait |
+| Pipeline reproductible | `scripts/` | ✅ Fait |
+| Rapport final | `rapport/Rapport_final_GreenSoft.docx` et PDF | ✅ Fait |
+| Présentation | `presentation/` | ✅ Fait |
+| Captures et preuves | `docs/preuves/` | ✅ Fait |
 
-## Légende
+## Limites assumées
 
-✅ Fait — 🟡 En cours / partiel — ⬜ Pas commencé
-
-## Comment maintenir ce document
-
-À mettre à jour à chaque changement de statut significatif (fin de phase, décision du prof, livrable terminé) — pas après chaque petit commit. Sert de point de contrôle rapide avant la remise finale : si une ligne reste ⬜ à J-2, c'est un signal d'alerte prioritaire.
+- PollutionDB couvre 2022–2024, car les données officielles 2025 n'étaient pas disponibles.
+- Cinq provinces ou territoires n'ont pas de mesure de précipitations; les valeurs `NULL` sont exclues des agrégations.
+- Power BI utilise le mode Import avec actualisation; la publication publique est bloquée par le tenant UQO.
+- La version livrée ne comporte pas de clés étrangères entre les tables annuelles; cette limite est documentée dans le rapport.
