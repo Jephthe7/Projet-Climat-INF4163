@@ -1,129 +1,101 @@
-# Projet Climat — INF4163-01 (Été 2026)
-### Sensibilisation au réchauffement climatique — Bases de données, SQL, visualisation
+# Projet Climat — INF4163-01 — Été 2026
 
-**Équipe 5**
-- Fedjo Tejioleng Wilfried Jephthé (chef de groupe)
-- Aka Andjui Melchisedek Ange-E
-- Lohoues Martine Grâce Debora
+## Baromètre Climat Canada — GREEN SOFT
 
-**Échéance** : lundi 10 août 2026, 8h00
+Projet de sensibilisation au réchauffement climatique réalisé par l'équipe 5 :
 
----
+- Fedjo Tejioleng Wilfried Jephthé;
+- Aka Andjui Melchisedek Ange-E;
+- Lohoues Martine Grâce Debora.
 
-## Objectif du projet
+## Objectif
 
-Concevoir et héberger trois bases de données climatiques (température, pollution,
-précipitations) pour les 13 provinces et territoires du Canada sur 2023-2025, les
-exposer via des procédures stockées et déclencheurs analytiques, et les présenter
-dans un site web avec des visualisations dynamiques (Power BI ou Tableau).
+Le projet collecte, nettoie, stocke et visualise des données climatiques pour les 13 provinces et territoires du Canada :
 
-## Structure du dépôt
+- températures mensuelles : 2023–2025;
+- émissions de gaz à effet de serre : 2022–2024, période confirmée par le professeur en raison de l'indisponibilité des données 2025;
+- précipitations annuelles : 2023–2025.
 
-```
-sql/                  Scripts SQL, un sous-dossier par base
-  temperaturedb/       CREATE TABLE, procédures, déclencheurs — TempératureDB
-  pollutiondb/          idem — PollutionDB
-  precipitationsdb/     idem — PrécipitationsDB
-data/
-  raw/                 Fichiers sources bruts, jamais modifiés
-  clean/               Fichiers nettoyés, prêts pour l'import SQL (+ cleaning_report.md)
-  sources/             Documentation de chaque source (lien, licence, méthode)
-  limitations.md       Limites connues des données (valeurs manquantes, écarts de période)
-scripts/              Pipeline de nettoyage reproductible (Python) — voir scripts/README.md
-frontend/             Code du site web
-powerbi/              Fichiers .pbix ou classeurs Tableau
-rapport/              Versions du rapport, figures, captures
-presentation/         PowerPoint, script de démo
-docs/
-  PGOP/                Plan de Gestion et d'Organisation du Projet (document de pilotage)
-  BluePrint/           Vision globale du système
-  DAT/                 Dossier d'Architecture Technique (décisions techniques détaillées)
-  Consignes/           Énoncé officiel du professeur
-assets/
-  logo/                Logo et identité visuelle de l'équipe
-matrice_tracabilite.md  Suivi rapide : chaque exigence de l'énoncé → où elle est satisfaite
-```
+Le système comprend trois bases Azure SQL, neuf tables annuelles principales, onze procédures stockées, douze déclencheurs, une API Node.js/Express, un frontend interactif et un rapport Power BI.
 
 ## Déploiement
 
-Le système est entièrement en ligne, sans dépendance à une machine locale :
-
-| Composant | Hébergement | URL |
+| Composant | Hébergement | Adresse |
 |---|---|---|
-| Bases de données (3) | Azure SQL Database (offre gratuite) | `climat-inf4163-sql.database.windows.net` |
-| API intermédiaire | Render (Web Service, gratuit) | https://projet-climat-inf4163.onrender.com |
-| Frontend | Render (Static Site, gratuit) | https://greensoft-climat-site.onrender.com |
-| Visualisation | Power BI Service | Rapport partagé aux comptes UQO (voir `powerbi/README.md`) |
+| 3 bases de données | Azure SQL Database | `climat-inf4163-sql.database.windows.net` |
+| API | Render Web Service | https://projet-climat-inf4163.onrender.com |
+| Frontend | Render Static Site | https://greensoft-climat-site.onrender.com |
+| Power BI | Desktop / Service UQO | Voir `powerbi/README.md` |
 
-Note : l'instance Render gratuite de l'API se met en veille après une période d'inactivité ;
-la première requête après une pause peut prendre jusqu'à 50 secondes avant de répondre.
+L'API gratuite Render peut prendre quelques secondes à redémarrer après une période d'inactivité.
 
-## Document de référence
+## Structure du dépôt
 
-Toute l'organisation du projet (rôles, calendrier, méthodologie, normes) est décrite
-dans `docs/PGOP/`. En cas de doute sur "qui fait quoi" ou "dans quel ordre", c'est la
-première chose à consulter.
+```text
+api/                  API Node.js/Express
+assets/               Logo et identité visuelle
+data/
+  raw/                Données brutes
+  clean/              Données nettoyées
+  sources/            Sources et méthode de collecte
+  limitations.md      Valeurs absentes et écarts de période
+docs/
+  BluePrint/          Vision fonctionnelle
+  Consignes/          Énoncé officiel
+  DAT/                Architecture technique
+  PGOP/               Gestion et organisation du projet
+  preuves/            Captures Azure, SQL, Render, Power BI et GitHub
+frontend/             Site web HTML/CSS/JavaScript
+powerbi/              Rapport Power BI et instructions
+presentation/         Présentation finale
+rapport/              Rapport final Word et PDF
+scripts/              Nettoyage et import reproductibles
+sql/                  Scripts des trois bases
+matrice_tracabilite.md État final des exigences
+```
 
-### Accès rapide
+## Démarrage local
 
-| Document | Version à lire vite (PDF, s'ouvre dans le navigateur) | Version à modifier (Word) |
-|---|---|---|
-| Plan de Gestion et d'Organisation du Projet (PGOP) — comment l'équipe s'organise | [PGOP.pdf](docs/PGOP/PGOP_v7.pdf) | [PGOP.docx](docs/PGOP/PGOP_v7.docx) |
-| Blueprint du projet — ce que nous construisons | [Blueprint.pdf](docs/BluePrint/Blueprint_Projet_v1.pdf) | [Blueprint.docx](docs/BluePrint/Blueprint_Projet_v1.docx) |
-| Dossier d'Architecture Technique (DAT) — toutes les décisions techniques détaillées | [DAT.pdf](docs/DAT/DAT_Projet_Climat_INF4163_v4.pdf) | [DAT.docx](docs/DAT/DAT_Projet_Climat_INF4163_v4.docx) |
-| Rapport final — comment le projet a été réalisé | — (exporter le PDF depuis Word une fois finalisé) | [Rapport.docx](rapport/Rapport_v0.6.docx) |
-| Matrice de traçabilité — chaque exigence de l'énoncé → où elle est satisfaite | [matrice_tracabilite.md](matrice_tracabilite.md) | — |
-| Énoncé officiel du professeur | [Project_UQO_INF4163.pdf](docs/Consignes/Project_UQO_INF4163.pdf) | — |
-| Ordre du jour — réunion de lancement | [Ordre_du_jour.md](docs/Ordre_du_jour_reunion_lancement.md) | — |
-| Matrice des tâches (à remplir en réunion) | [matrice_taches.md](docs/matrice_taches.md) | — |
-
-> Astuce : GitHub affiche les PDF directement dans le navigateur (clique et lis), mais
-> pas les fichiers Word (il faut les télécharger). Pour une lecture rapide avant la
-> réunion, utilise toujours la colonne PDF ; pour éditer, ouvre le .docx dans Word et
-> repousse une nouvelle version + son PDF à jour après modification.
-
-## État d'avancement
-
-Voir le carnet de bord (section 15 du PGOP) pour l'état de chaque phase.
-
-## Installation / exécution
-
-### API (Node.js/Express)
+### API
 
 ```bash
 cd api
 npm install
-cp .env.example .env
 ```
 
-Ouvrir `.env` et remplir `DB_PASSWORD` (voir `api/README.md` pour le détail des
-variables — valeurs Azure par défaut, alternative locale en commentaire). Puis :
+Copier `.env.example` vers `.env`, compléter les paramètres de connexion, puis lancer :
 
 ```bash
 npm start
 ```
 
-Doit afficher `API demarree sur http://localhost:3000`.
+Les secrets ne doivent jamais être ajoutés au dépôt.
 
 ### Frontend
 
-Aucune installation nécessaire (HTML/CSS/JS pur, pas de build). Ouvrir
-`frontend/index.html` avec un serveur local (ex. l'extension VS Code
-**Live Server**) plutôt que de double-cliquer dessus directement, sinon les
-appels à l'API échouent (restriction du navigateur sur les fichiers `file://`).
-Par défaut, `API_BASE` dans `frontend/app.js` pointe vers l'API de production
-(Render) ; pour tester contre une API locale, changer temporairement cette
-constante en `http://localhost:3000`.
+Servir le dossier `frontend/` avec un serveur HTTP local, par exemple Live Server. Par défaut, `frontend/app.js` utilise l'API publique Render.
 
-### Bases de données
+### SQL
 
-Scripts SQL dans `sql/<base>/` (CreateTable, Views, Procedures, Triggers — à
-exécuter dans cet ordre, dans SSMS ou Azure Data Studio). Scripts Python
-d'import dans `scripts/` (nécessite `pip install pyodbc --break-system-packages`
-et le pilote ODBC 17 ou 18 pour SQL Server) : `python import_temperature.py`,
-`import_pollution.py`, `import_precipitations.py`.
+Dans chaque dossier `sql/<base>/`, exécuter les scripts dans cet ordre :
 
-### Power BI
+1. création des tables;
+2. import des données;
+3. création des vues;
+4. procédures stockées;
+5. déclencheurs.
 
-Ouvrir `powerbi/ProjetClimat.pbix` dans Power BI Desktop. Si les identifiants
-de connexion Azure SQL sont demandés, voir `powerbi/README.md`.
+## Livrables principaux
+
+- Rapport : `rapport/Rapport_final_GreenSoft.docx` et `rapport/Rapport_final_GreenSoft.pdf`;
+- Présentation : fichiers dans `presentation/`;
+- Power BI : `powerbi/ProjetClimat.pbix`;
+- Traçabilité : `matrice_tracabilite.md`;
+- Énoncé : `docs/Consignes/Project_UQO_INF4163.pdf`.
+
+## Limites documentées
+
+- PollutionDB couvre 2022–2024 plutôt que 2023–2025.
+- Cinq provinces ou territoires n'ont pas de mesure de précipitations aux stations retenues; les valeurs restent `NULL`.
+- Power BI utilise le mode Import avec actualisation, tandis que le frontend public est alimenté dynamiquement par l'API Azure SQL.
+- La version livrée ne contient pas de clés étrangères entre les tables annuelles; cette limite et l'amélioration proposée sont expliquées dans le rapport.

@@ -1,70 +1,39 @@
-# API — Projet Climat INF4163
+# Power BI — Baromètre Climat Canada
 
-API intermédiaire entre le frontend et les 3 bases SQL Server. Nécessaire
-car le navigateur ne peut pas interroger SQL Server (local ou Azure)
-directement — voir DAT section 2.
+Le fichier `ProjetClimat.pbix` contient trois pages : Température, Pollution et Précipitations.
 
-## Architecture
+## Sources
 
-```
-routes/resultats.js          → couche HTTP (GET /resultats)
-services/resultatsService.js → formatage (libellés français, vérifie qu'on a bien 11 résultats)
-repositories/resultatsRepository.js → assemble les 11 résultats des 3 bases
-repositories/temperatureRepository.js, pollutionRepository.js, precipitationsRepository.js
-                              → appels bruts aux 11 procédures stockées
-routes/graphiques.js          → couche HTTP (GET /api/temperature, /api/pollution, /api/precipitations)
-repositories/graphiquesRepository.js → lignes brutes des 3 vues SQL (vwTemperature,
-                                vwPollution, vwPrecipitations), pour les graphiques
-                                Chart.js du frontend — pas les mêmes données que
-                                /resultats (données déjà agrégées par les procédures)
-config/db.js                 → gestion des connexions (1 pool par base)
-```
+- `TemperatureDB.dbo.vwTemperature`;
+- `PollutionDB.dbo.vwPollution`;
+- `PrecipitationsDB.dbo.vwPrecipitations`.
 
-Flux conforme à DAT section 10 : *"le repository assemble les 11
-résultats, le service les formate, la route les renvoie en JSON"*.
+Ces vues réunissent les tables annuelles de chaque base et fournissent la colonne `Annee` utilisée dans Power BI.
 
-## Endpoints disponibles
+## Mode de connexion final
 
-| Route | Renvoie |
-|---|---|
-| `GET /resultats` | Les 11 résultats analytiques (année/mois/province les plus ou moins extrêmes) |
-| `GET /api/temperature` | Lignes brutes de `vwTemperature` (province, mois, année, température) |
-| `GET /api/pollution` | Lignes brutes de `vwPollution` (province, année, émissions) |
-| `GET /api/precipitations` | Lignes brutes de `vwPrecipitations` (province, année, précipitations) |
+Le modèle final utilise le mode **Import**, avec actualisation depuis Azure SQL. Le développement initial avait été réalisé en DirectQuery, mais l'intégration publique était incompatible avec les restrictions du tenant Microsoft 365 de l'UQO.
 
-Les 3 routes `/api/*` existent pour alimenter les graphiques Chart.js du frontend (moyenne par
-province calculée côté client), en complément de `/resultats` qui sert le tableau de résultats
-analytiques.
+Le site public utilise donc Chart.js, alimenté dynamiquement par l'API connectée aux mêmes bases Azure SQL. Power BI demeure un tableau de bord complémentaire dans Desktop ou Power BI Service.
 
-## Installation (première fois)
+## Ouvrir et actualiser
 
-```bash
-cd api
-npm install
-cp .env.example .env
-```
+1. Ouvrir `ProjetClimat.pbix` dans Power BI Desktop.
+2. Cliquer sur **Actualiser**.
+3. Si nécessaire, sélectionner Azure SQL Database et utiliser les identifiants fournis séparément.
 
-Puis ouvrir `.env` et remplir `DB_PASSWORD` avec le mot de passe du
-login `api_climat` créé dans SQL Server (jamais commité — `.env` est
-dans `.gitignore`).
+Aucun mot de passe n'est stocké dans GitHub.
 
-## Lancer l'API en local
+## Périodes
 
-```bash
-npm start
-```
+- Température : 2023–2025;
+- Pollution : 2022–2024;
+- Précipitations : 2023–2025.
 
-Doit afficher `API demarree sur http://localhost:3000`.
+## Limites
 
-## Tester
+- Cinq provinces ou territoires ne disposent pas de mesures de précipitations aux stations retenues; les valeurs restent `NULL`.
+- « Publier sur le web » est désactivé par le tenant UQO.
+- Le partage Power BI Service peut nécessiter une authentification UQO.
 
-- `http://localhost:3000/` → doit répondre `{"statut": "API Projet Climat INF4163 — en ligne", ...}` immédiatement, sans toucher aux bases (test que le serveur tourne).
-- `http://localhost:3000/resultats` → doit répondre un tableau JSON de 11 objets (un par procédure stockée). Si erreur 500, vérifier `.env` (mot de passe, mode d'authentification SQL Server activé — voir historique du projet) et que SQL Server est démarré.
-
-## Bascule vers Azure (plus tard, une seule fois)
-
-Seul `.env` change — pas le code :
-- `DB_SERVER` → nom `*.database.windows.net`
-- `DB_ENCRYPT=true` (obligatoire sur Azure)
-- `DB_TRUST_SERVER_CERTIFICATE=false`
-- `DB_USER` / `DB_PASSWORD` → identifiants du login créé sur le serveur Azure SQL
+Les preuves se trouvent dans `docs/preuves/powerbi/`.
